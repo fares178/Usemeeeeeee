@@ -4,10 +4,11 @@ import os
 # Use local model cache so the pre-downloaded model is found in production
 os.environ.setdefault('SENTENCE_TRANSFORMERS_HOME', './model_cache')
 
-from flask import Flask, request, jsonify, send_from_directory, render_template
+from sentence_transformers import SentenceTransformer, util
+from flask import Flask, render_template, request, jsonify
 
 # Import for sentence-transformers
-from sentence_transformers import SentenceTransformer, util
+
 
 # =====================
 # CHATBOT CLASS WITH EMBEDDINGS
@@ -913,6 +914,8 @@ class Chatbot:
         }
 
         for intent in intents_data["intents"]:
+            if "tag" not in intent:
+                continue
             tag = intent["tag"]
             self.intents.append(tag)
             self.patterns[tag] = intent["patterns"]
@@ -991,5 +994,6 @@ def chat():
     return jsonify({"response": response})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 8000))
+    app.run(host='0.0.0.0', port=port)
     
