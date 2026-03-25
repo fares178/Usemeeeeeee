@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chatbot</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.3s;
+}
+body.dark { background-color: #1a1a2e; }
+
+.chat-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    overflow: hidden;
+    transition: background-color 0.3s;
+}
+body.dark .chat-container {
+    background-color: #16213e;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.chat-header {
+    background-color: #007bff;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 1.2em;
+}
+body.dark .chat-header { background-color: #0f3460; }
+
+.nav-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ccc;
+}
+body.dark .nav-buttons {
+    background-color: #0f3460;
+    border-bottom: 1px solid #1a1a2e;
+}
+
+.nav-buttons button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.nav-buttons button:hover { background-color: #0056b3; }
+
+.chat-box {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    border-bottom: 1px solid #eee;
+}
+body.dark .chat-box { border-bottom: 1px solid #0f3460; }
+
+.message { margin-bottom: 10px; clear: both; }
+
+.message.user {
+    background-color: #e6f7ff;
+    color: #000;
+    padding: 8px 12px;
+    border-radius: 15px;
+    float: right;
+    max-width: 70%;
+    margin-left: auto;
+    text-align: right;
+}
+body.dark .message.user { background-color: #1e4d7b; color: #e0e0e0; }
+
+.message.bot {
+    background-color: #f0f0f0;
+    color: #000;
+    padding: 8px 12px;
+    border-radius: 15px;
+    float: left;
+    max-width: 70%;
+    margin-right: auto;
+    text-align: left;
+}
+body.dark .message.bot { background-color: #2a2a4a; color: #e0e0e0; }
+
+.chat-input-area {
+    display: flex;
+    flex-direction: column; /* changed to column to stack suggestions */
+    padding: 15px;
+    border-top: 1px solid #eee;
+    background-color: #fff;
+}
+body.dark .chat-input-area {
+    background-color: #16213e;
+    border-top: 1px solid #0f3460;
+}
+
+#suggestWrapper {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+#suggestBtn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+#suggestBtn:hover { background-color: #0056b3; }
+
+#suggestBox {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    background: #222;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    display: none;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+#closeBtn {
+    float: right;
+    background: red;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.suggestion {
+    cursor: pointer;
+    padding: 5px;
+}
+.suggestion:hover { background: #444; }
+
+.chat-input-area input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: #fff;
+    color: #000;
+}
+body.dark .chat-input-area input {
+    background-color: #0f3460;
+    color: #e0e0e0;
+    border: 1px solid #444;
+}
+
+.chat-input-area .send-btn {
+    background-color: #28a745;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 20px;
+    color: white;
+    cursor: pointer;
+}
+.chat-input-area .send-btn:hover { background-color: #218838; }
+</style>
+</head>
+<body>
+<div class="chat-container">
+    <div class="chat-header">usemee</div>
+    <div class="nav-buttons">
+        <button onclick="openPage('index.html')">Home</button>
+        <button onclick="openPage('about.html')">About</button>
+        <button onclick="openPage('settings.html')">Settings</button>
+    </div>
+    <div class="chat-box" id="chat-box"></div>
+    <div class="chat-input-area">
+        <!-- Suggestions button above input -->
+        <div id="suggestWrapper">
+            <button id="suggestBtn">💡 Suggestions</button>
+            <div id="suggestBox">
+                <button id="closeBtn">✖</button>
+                <p class="suggestion">what is business</p>
+                <p class="suggestion">what is the purpose of business</p>
+                
+            </div>
+        </div>
+        <div style="display: flex;">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button class="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Apply dark mode from localStorage immediately
+if (localStorage.getItem('darkMode') === 'enabled') {
+    document.body.classList.add('dark');
+}
+
+function openPage(page) { window.location.href = page; }
+
+async function sendMessage() {
+    const userInput = document.getElementById('user-input');
+    const message = userInput.value.trim();
+    if (message === '') return;
+    addMessage(message, 'user');
+    userInput.value = '';
+    try {
+        const response = await fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message }),
+        });
+        const data = await response.json();
+        addMessage(data.response, 'bot');
+    } catch (error) {
+        addMessage('Error communicating with the chatbot.', 'bot');
+    }
+}
+
+function addMessage(text, sender) {
+    const chatBox = document.getElementById('chat-box');
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', sender);
+    messageDiv.textContent = text;
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+document.getElementById('user-input').addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') sendMessage();
+});
+
+window.onload = function() {
+    addMessage('Hello! How can I help you with business questions today?', 'bot');
+};
+
+// Suggestions button logic
+const suggestBtn = document.getElementById("suggestBtn");
+const suggestBox = document.getElementById("suggestBox");
+const closeBtn = document.getElementById("closeBtn");
+const suggestions = document.querySelectorAll(".suggestion");
+
+suggestBtn.onclick = () => {
+    suggestBox.style.display = suggestBox.style.display === "block" ? "none" : "block";
+};
+
+closeBtn.onclick = () => { suggestBox.style.display = "none"; };
+
+suggestions.forEach(item => {
+    item.onclick = () => {
+        document.getElementById('user-input').value = item.innerText;
+        sendMessage();
+        suggestBox.style.display = "none";
+    };
+});
+</script>
+</body>
+</html>
