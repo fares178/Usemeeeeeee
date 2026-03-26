@@ -996,4 +996,19 @@ def chat():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8000))
     app.run(host='0.0.0.0', port=port)
+app = Flask(__name__)
+bot = Chatbot()
+
+@app.route("/")
+def index():
+    return render_template("chatbot.html")
+
+@app.route("/get")
+def get_bot_response():
+    user_text = request.args.get('msg')
+    # This calls your chatbot's logic to find the best match
+    return str(bot.get_response(user_text))
+
+if __name__ == "__main__":
+    app.run(debug=True)
     
