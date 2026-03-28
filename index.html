@@ -67,6 +67,7 @@
     </div>
 </div>
 
+<script src="config.js"></script>
 <script>
 // Apply dark mode
 if (localStorage.getItem('darkMode') === 'enabled') {
@@ -75,7 +76,7 @@ if (localStorage.getItem('darkMode') === 'enabled') {
 
 function openPage(page) { window.location.href = page; }
 
-// Updated sendMessage to talk to local backend
+// Updated sendMessage - Works with Gradio/Hugging Face Spaces
 async function sendMessage() {
     var rawText = $("#user-input").val();
     if (rawText.trim() === "") return;
@@ -88,24 +89,61 @@ async function sendMessage() {
     $(`#${loadingId}`).addClass('loading');
 
     try {
-        const response = await fetch("/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: rawText })
-        });
+        console.log("Backend URL:", ACTIVE_BACKEND);
+        
+        let response;
+        let botReply;
 
-        if (!response.ok) throw new Error("Connection failed: " + response.status);
-
-        const data = await response.json();
-
-        // The response contains the bot's reply
-        const botReply = data?.response || "Sorry, I couldn't understand that.";
+        if (USE_LOCAL_BACKEND) {
+            // Call local Flask backend
+            console.log("Using local Flask backend");
+            response = await fetch(ACTIVE_BACKEND + "/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: rawText })
+            });
+            
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            botReply = data?.response || "Sorry, I couldn't understand that.";
+        } else {
+            // Call Hugging Face Spaces (Gradio)
+            console.log("Using Hugging Face Space");
+            
+            // Try Gradio API endpoint
+            response = await fetch(ACTIVE_BACKEND + "/api/predict/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ data: [rawText] })
+            });
+            
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            
+            const data = await response.json();
+            console.log("Response:", data);
+            
+            // Gradio returns data in various formats
+            botReply = data?.data?.[0] || data?.response || data?.result || JSON.stringify(data);
+        }
 
         $(`#${loadingId}`).text(botReply).removeClass('loading');
 
     } catch (error) {
-        console.error(error);
-        $(`#${loadingId}`).text("Error: Could not reach the chatbot. Make sure the backend is running.").css("color", "red");
+        console.error("Full error:", error);
+        
+        let errorMsg = "❌ Connection Error";
+        
+        if (error.message.includes("Failed to fetch")) {
+            if (USE_LOCAL_BACKEND) {
+                errorMsg = `❌ Can't reach Flask backend: ${ACTIVE_BACKEND}\n\nMake sure the server is running!`;
+            } else {
+                errorMsg = `❌ Can't reach Hugging Face Space\n\n🔍 Troubleshooting:\n1. Is your Space URL correct: ${ACTIVE_BACKEND}?\n2. Is the Space running (not sleeping)?\n3. Check browser console (F12) for more details`;
+            }
+        } else if (error.message.includes("HTTP")) {
+            errorMsg = `❌ Server error (${error.message})\n\nYour Space might be having issues. Check the HF Spaces logs.`;
+        }
+        
+        $(`#${loadingId}`).text(errorMsg).css("color", "red");
     }
 }
 // Fixed addMessage to support unique IDs for the "Thinking" replacement
