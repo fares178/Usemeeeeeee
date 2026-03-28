@@ -75,7 +75,7 @@ if (localStorage.getItem('darkMode') === 'enabled') {
 
 function openPage(page) { window.location.href = page; }
 
-// Updated sendMessage to talk to Hugging Face
+// Updated sendMessage to talk to local backend
 async function sendMessage() {
     var rawText = $("#user-input").val();
     if (rawText.trim() === "") return;
@@ -88,24 +88,24 @@ async function sendMessage() {
     $(`#${loadingId}`).addClass('loading');
 
     try {
-        const response = await fetch("https://ankarasui-business-chatbot.hf.space/api/predict/", {
+        const response = await fetch("/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ data: [rawText] }) // Hugging Face expects `data` as array
+            body: JSON.stringify({ message: rawText })
         });
 
-        if (!response.ok) throw new Error("Connection failed");
+        if (!response.ok) throw new Error("Connection failed: " + response.status);
 
         const data = await response.json();
 
-        // The response array usually contains the text in data[0].value
-        const botReply = data?.data?.[0] || "Sorry, I couldn't understand that.";
+        // The response contains the bot's reply
+        const botReply = data?.response || "Sorry, I couldn't understand that.";
 
         $(`#${loadingId}`).text(botReply).removeClass('loading');
 
     } catch (error) {
         console.error(error);
-        $(`#${loadingId}`).text("Error: Could not reach the business chatbot. Check your Space status.").css("color", "red");
+        $(`#${loadingId}`).text("Error: Could not reach the chatbot. Make sure the backend is running.").css("color", "red");
     }
 }
 // Fixed addMessage to support unique IDs for the "Thinking" replacement

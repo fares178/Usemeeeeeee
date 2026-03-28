@@ -6,6 +6,7 @@ os.environ.setdefault('SENTENCE_TRANSFORMERS_HOME', './model_cache')
 
 from sentence_transformers import SentenceTransformer, util
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 
 # Import for sentence-transformers
 
@@ -963,6 +964,7 @@ class Chatbot:
             return self.ask_llm(message)
 
 app = Flask(__name__, template_folder='templates')
+CORS(app)  # Enable CORS for all routes
 
 # Eagerly initialize at startup — model is cached from the build step
 bot_assistant = Chatbot()
@@ -993,22 +995,13 @@ def chat():
     response = bot_assistant.process_message(user_message)
     return jsonify({"response": response})
 
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8000))
-    app.run(host='0.0.0.0', port=port)
-app = Flask(__name__)
-bot = Chatbot()
-
-@app.route("/")
-def index():
-    return render_template("chatbot.html")
-
 @app.route("/get")
 def get_bot_response():
     user_text = request.args.get('msg')
     # This calls your chatbot's logic to find the best match
-    return str(bot.get_response(user_text))
+    return str(bot_assistant.process_message(user_text))
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 8000))
+    app.run(host='0.0.0.0', port=port)
     
