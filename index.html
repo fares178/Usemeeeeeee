@@ -290,11 +290,17 @@ $(".suggestion").click(function(){
 });
 
 // Dark mode from settings
-if(localStorage.getItem('darkMode')==='enabled') document.body.classList.add('dark');
+document.addEventListener("DOMContentLoaded", function() {
+    // Dark mode
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark');
+    }
 
-window.onload = ()=>{
-    addMessage("Hello! I'm your AI assistant. Ask me anything about business, entrepreneurship, or starting your own company.", 'bot', null, true);
-}
+    // Initial bot message
+    if (document.getElementById('chat-box')) {
+        addMessage('Hello! How can I help you with business questions today?', 'bot');
+    }
+});
 </script>
 </body>
 </html>
