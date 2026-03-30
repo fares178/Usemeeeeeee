@@ -168,106 +168,38 @@ const intents = [
 🔟 **Launch & Grow**: Start selling, gather feedback, and improve.`
 ]}
 
-];
-// Simple similarity function (Levenshtein distance)
-function findResponse(input) {
-    input = preprocess(input);
-    const keywordInput = extractKeywords(input);
+];if (bestScore > 0.35) {
+    return bestMatch.responses[Math.floor(Math.random() * bestMatch.responses.length)];
+}
 
-    let bestMatch = null;
-    let bestScore = 0.0;
+// 🔥 smart fallback (this replaces your old one)
+let bestIntent = null;
+let maxMatches = 0;
 
-    for (const intent of intents) {
-        for (const pattern of intent.patterns) {
-            const cleanPattern = preprocess(pattern);
-            const keywordPattern = extractKeywords(cleanPattern);
+for (const intent of intents) {
+    let matchCount = 0;
 
-            const scoreFull = similarity(input, cleanPattern);
-            const scoreKeywords = similarity(keywordInput, keywordPattern);
+    for (const pattern of intent.patterns) {
+        const words = preprocess(pattern).split(" ");
 
-            // 🔥 EXTRA BOOST: keyword overlap (VERY IMPORTANT)
-            let overlap = 0;
-            const inputWords = keywordInput.split(" ");
-            const patternWords = keywordPattern.split(" ");
-
-            for (let word of inputWords) {
-                if (patternWords.includes(word)) overlap++;
-            }
-
-            const overlapScore = overlap / (patternWords.length || 1);
-
-            // 🔥 FINAL SCORE (weighted)
-            let finalScore =
-                (scoreFull * 0.3) +
-                (scoreKeywords * 0.4) +
-                (overlapScore * 0.3);
-
-            // 🔥 PENALIZE SHORT PATTERNS (fix "hello" problem)
-            if (cleanPattern.length < 5) {
-                finalScore *= 0.6;
-            }
-
-            if (finalScore > bestScore) {
-                bestScore = finalScore;
-                bestMatch = intent;
+        for (const word of words) {
+            if (input.includes(word)) {
+                matchCount++;
             }
         }
     }
 
-    // ✅ MAIN MATCH
-    if (bestScore > 0.35) {
-        return bestMatch.responses[Math.floor(Math.random() * bestMatch.responses.length)];
-    }
-
-    // 🔥 SMART KEYWORD PRIORITY (business override)
-    else:
-
-       return "I'm sorry, I didn't understand that. Could you rephrase your question?";
-}
-
-// Typing animation helper
-function typeText(messageDiv, text, speed = 30) {
-    messageDiv.textContent = "";
-    let i = 0;
-    const interval = setInterval(() => {
-        messageDiv.textContent += text[i];
-        i++;
-        if (i >= text.length) clearInterval(interval);
-    }, speed);
-}
-
-function openPage(page) { window.location.href = page; }
-
-function addMessage(text, sender, id=null, typing=false) {
-    const chatBox = document.getElementById('chat-box');
-    const msgDiv = document.createElement('div');
-    msgDiv.classList.add('message', sender);
-    if(id) msgDiv.id = id;
-
-    chatBox.appendChild(msgDiv);
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    if(typing){
-        typeText(msgDiv, text, 20);
-    } else {
-        msgDiv.textContent = text;
+    if (matchCount > maxMatches) {
+        maxMatches = matchCount;
+        bestIntent = intent;
     }
 }
 
-// Simple intent matching
-function findResponse(input) {
-    input = input.toLowerCase();
-    for(const intent of intents){
-        for(const pattern of intent.patterns){
-            if(input.includes(pattern.toLowerCase())){
-                // Pick a random response if multiple
-                return intent.responses[Math.floor(Math.random()*intent.responses.length)];
-            }
-        }
-    }
-    return "I'm sorry, I didn't understand that. Could you rephrase your question?";
+if (maxMatches > 0 && bestIntent) {
+    return bestIntent.responses[0];
 }
 
+return "I'm sorry, I didn't understand that. Could you rephrase your question?";
 async function sendMessage() {
     const userInput = $("#user-input").val().trim();
     if(!userInput) return;
