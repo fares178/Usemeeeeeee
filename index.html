@@ -222,7 +222,44 @@ function findResponse(input) {
 
     return "I'm sorry, I didn't understand that. Could you rephrase your question?";
 }
+function generateSmartReply(input) {
 
+    // 1️⃣ Try normal intent system
+    const intentReply = findResponse(input);
+
+    if (!intentReply.includes("I didn't understand")) {
+        return intentReply;
+    }
+
+    // 2️⃣ Try using memory (context awareness)
+    if (chatHistory.length > 1) {
+        const lastUserMessage = chatHistory
+            .filter(m => m.role === "user")
+            .slice(-2, -1)[0];
+
+        if (lastUserMessage) {
+            if (lastUserMessage.content.includes("business")) {
+                return "It seems you're asking about business. A business is an organization that provides goods or services to customers.";
+            }
+        }
+    }
+
+    // 3️⃣ Smart fallback (dynamic response)
+    if (input.includes("how")) {
+        return "That’s a great question. It usually involves steps or a process. Can you be more specific?";
+    }
+
+    if (input.includes("why")) {
+        return "Good question — this is usually about purpose or reasons. Try asking about a specific topic like business or marketing.";
+    }
+
+    if (input.includes("what")) {
+        return "You're asking for a definition. Try specifying the topic, like 'what is marketing' or 'what is profit'.";
+    }
+
+    // 4️⃣ Default fallback
+    return "I'm not fully sure yet 🤔 but I'm learning! Try asking about business, marketing, or entrepreneurship.";
+}
 // Typing animation helper
 function typeText(messageDiv, text, speed = 30) {
     messageDiv.textContent = "";
