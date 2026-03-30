@@ -172,7 +172,6 @@ const intents = [
 // Simple similarity function (Levenshtein distance)
 function findResponse(input) {
     input = preprocess(input);
-
     const keywordInput = extractKeywords(input);
 
     let bestMatch = null;
@@ -183,11 +182,30 @@ function findResponse(input) {
             const cleanPattern = preprocess(pattern);
             const keywordPattern = extractKeywords(cleanPattern);
 
-            // 🔥 combine BOTH
             const scoreFull = similarity(input, cleanPattern);
             const scoreKeywords = similarity(keywordInput, keywordPattern);
 
-            const finalScore = (scoreFull * 0.5) + (scoreKeywords * 0.5);
+            // 🔥 EXTRA BOOST: keyword overlap (VERY IMPORTANT)
+            let overlap = 0;
+            const inputWords = keywordInput.split(" ");
+            const patternWords = keywordPattern.split(" ");
+
+            for (let word of inputWords) {
+                if (patternWords.includes(word)) overlap++;
+            }
+
+            const overlapScore = overlap / (patternWords.length || 1);
+
+            // 🔥 FINAL SCORE (weighted)
+            let finalScore =
+                (scoreFull * 0.3) +
+                (scoreKeywords * 0.4) +
+                (overlapScore * 0.3);
+
+            // 🔥 PENALIZE SHORT PATTERNS (fix "hello" problem)
+            if (cleanPattern.length < 5) {
+                finalScore *= 0.6;
+            }
 
             if (finalScore > bestScore) {
                 bestScore = finalScore;
@@ -196,29 +214,15 @@ function findResponse(input) {
         }
     }
 
-    if (bestScore > 0.45) {
+    // ✅ MAIN MATCH
+    if (bestScore > 0.35) {
         return bestMatch.responses[Math.floor(Math.random() * bestMatch.responses.length)];
     }
 
-    // fallback
-    for (const intent of intents) {
-        for (const pattern of intent.patterns) {
-            if (input.includes(preprocess(pattern))) {
-                return intent.responses[0];
-            }
-        }
-    }
+    // 🔥 SMART KEYWORD PRIORITY (business override)
+    else:
 
-    return "I'm sorry, I didn't understand that. Could you rephrase your question?";
-}
-    }
-
-    // Threshold for typo tolerance
-    if(bestScore > 0.6){ // Adjust 0.6 for stricter or more lenient matching
-        return bestMatch.responses[Math.floor(Math.random()*bestMatch.responses.length)];
-    }
-
-    return "I'm sorry, I didn't understand that. Could you rephrase your question?";
+       return "I'm sorry, I didn't understand that. Could you rephrase your question?";
 }
 
 // Typing animation helper
