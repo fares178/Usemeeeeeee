@@ -239,19 +239,18 @@ async function sendMessage() {
     const userInput = $("#user-input").val().trim();
     if(!userInput) return;
 
-    addMessage(userInput, 'user');
+    addMessage(userInput, 'user'); // show user message
     $("#user-input").val("");
 
     const loadingId = "msg-" + Date.now();
     addMessage("Thinking...", 'bot', loadingId);
 
-    // Simulate typing delay
     setTimeout(()=>{
-        const botReply = findResponse(userInput);
+        const botReply = generateSmartReply(userInput); // ✅ use smart reply
         const msgDiv = document.getElementById(loadingId);
         msgDiv.classList.remove('loading');
         typeText(msgDiv, botReply, 20);
-    }, 1000 + Math.random()*1000); // Random delay to feel like AI
+    }, 800 + Math.random()*1000);
 }
 
 // Enter key to send
