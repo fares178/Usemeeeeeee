@@ -168,38 +168,104 @@ const intents = [
 🔟 **Launch & Grow**: Start selling, gather feedback, and improve.`
 ]}
 
-];if (bestScore > 0.35) {
-    return bestMatch.responses[Math.floor(Math.random() * bestMatch.responses.length)];
+];
+// Simple similarity function (Levenshtein distance)
+function similarity(s1, s2) {
+    s1 = s1.toLowerCase();
+    s2 = s2.toLowerCase();
+    const longer = s1.length > s2.length ? s1 : s2;
+    const shorter = s1.length > s2.length ? s2 : s1;
+    const longerLength = longer.length;
+    if(longerLength === 0) return 1.0;
+    const editDistance = levenshteinDistance(longer, shorter);
+    return (longerLength - editDistance) / parseFloat(longerLength);
 }
 
-// 🔥 smart fallback (this replaces your old one)
-let bestIntent = null;
-let maxMatches = 0;
+// Levenshtein distance
+function levenshteinDistance(a, b){
+    const matrix = Array.from({length: b.length+1}, (_,i)=>Array(a.length+1).fill(0));
+    for(let i=0;i<=b.length;i++) matrix[i][0]=i;
+    for(let j=0;j<=a.length;j++) matrix[0][j]=j;
+    for(let i=1;i<=b.length;i++){
+        for(let j=1;j<=a.length;j++){
+            const cost = a[j-1]===b[i-1]?0:1;
+            matrix[i][j] = Math.min(
+                matrix[i-1][j]+1,
+                matrix[i][j-1]+1,
+                matrix[i-1][j-1]+cost
+            );
+        }
+    }
+    return matrix[b.length][a.length];
+}
 
-for (const intent of intents) {
-    let matchCount = 0;
+// Updated findResponse using similarity
+function findResponse(input) {
+    input = input.toLowerCase();
+    let bestMatch = null;
+    let bestScore = 0.0;
 
-    for (const pattern of intent.patterns) {
-        const words = preprocess(pattern).split(" ");
-
-        for (const word of words) {
-            if (input.includes(word)) {
-                matchCount++;
+    for(const intent of intents){
+        for(const pattern of intent.patterns){
+            const score = similarity(input, pattern);
+            if(score > bestScore){
+                bestScore = score;
+                bestMatch = intent;
             }
         }
     }
 
-    if (matchCount > maxMatches) {
-        maxMatches = matchCount;
-        bestIntent = intent;
+    // Threshold for typo tolerance
+    if(bestScore > 0.6){ // Adjust 0.6 for stricter or more lenient matching
+        return bestMatch.responses[Math.floor(Math.random()*bestMatch.responses.length)];
+    }
+
+    return "I'm sorry, I didn't understand that. Could you rephrase your question?";
+}
+
+// Typing animation helper
+function typeText(messageDiv, text, speed = 30) {
+    messageDiv.textContent = "";
+    let i = 0;
+    const interval = setInterval(() => {
+        messageDiv.textContent += text[i];
+        i++;
+        if (i >= text.length) clearInterval(interval);
+    }, speed);
+}
+
+function openPage(page) { window.location.href = page; }
+
+function addMessage(text, sender, id=null, typing=false) {
+    const chatBox = document.getElementById('chat-box');
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('message', sender);
+    if(id) msgDiv.id = id;
+
+    chatBox.appendChild(msgDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    if(typing){
+        typeText(msgDiv, text, 20);
+    } else {
+        msgDiv.textContent = text;
     }
 }
 
-if (maxMatches > 0 && bestIntent) {
-    return bestIntent.responses[0];
+// Simple intent matching
+function findResponse(input) {
+    input = input.toLowerCase();
+    for(const intent of intents){
+        for(const pattern of intent.patterns){
+            if(input.includes(pattern.toLowerCase())){
+                // Pick a random response if multiple
+                return intent.responses[Math.floor(Math.random()*intent.responses.length)];
+            }
+        }
+    }
+    return "I'm sorry, I didn't understand that. Could you rephrase your question?";
 }
 
-return "I'm sorry, I didn't understand that. Could you rephrase your question?";
 async function sendMessage() {
     const userInput = $("#user-input").val().trim();
     if(!userInput) return;
