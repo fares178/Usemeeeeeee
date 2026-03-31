@@ -506,38 +506,28 @@ function addMessage(text,sender,id=null){
 }
 
 // ================= SEND MESSAGE =================
+// ================= SEND MESSAGE =================
 function sendMessage(){
-    const input=$("#user-input").val().trim();
+    const input = $("#user-input").val().trim();
     if(!input) return;
 
-    addMessage(input,'user');
+    addMessage(input, 'user');
     $("#user-input").val("");
 
-    const loadingId="msg-"+Date.now();
-    addMessage("Thinking",'bot',loadingId);
+    const loadingId = "msg-" + Date.now();
+    addMessage("Thinking", 'bot', loadingId);
 
     const msgDiv = document.getElementById(loadingId);
     const animation = animateThinking(msgDiv);
-
-    const thinkingTime = getThinkingTime(input); // dynamic thinking time
 
     setTimeout(()=>{
         clearInterval(animation);
 
         const reply = getBotReply(input);
-        typeText(msgDiv, reply, 20); // ✅ first sentence + rest all animate exactly the same
-    }, thinkingTime);
-}
-function openPage(page){window.location.href=page;}
-// Enter key sends
-$("#user-input").on('keypress',function(e){if(e.key==='Enter') sendMessage();});
+        typeText(msgDiv, reply, 20);
 
-// Suggestions toggle
-$("#suggestBtn").click(()=>$("#suggestBox").toggle());
-$("#closeBtn").click(()=>$("#suggestBox").hide());
-$(".suggestion").click(function(){
-    $("#user-input").val($(this).text()); sendMessage(); $("#suggestBox").hide();
-});
+    }, 500 + Math.random() * 800);
+}
 
 // Dark mode from localStorage
 if(localStorage.getItem('darkMode')==='enabled') document.body.classList.add('dark');
