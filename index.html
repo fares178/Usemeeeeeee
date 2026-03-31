@@ -66,6 +66,7 @@ body.dark .chat-input-area input { background-color: #0f3460; color: #e0e0e0; bo
 </div>
 
 <script>
+let lastopic = "";
 // ======= FULL INTENTS =======
 const intents = [
     // GREETINGS
@@ -172,99 +173,193 @@ const intents = [
     ]}
 
     // ADD MORE UP TO ~200 INTENTS
-];
+];// ================= CONTEXT MEMORY =================
+let lastTopic = "";
 
-// Typo-tolerant similarity
+// ================= LEVENSHTEIN =================
 function levenshteinDistance(a, b){
     const matrix = Array.from({length: b.length+1}, (_,i)=>Array(a.length+1).fill(0));
     for(let i=0;i<=b.length;i++) matrix[i][0]=i;
     for(let j=0;j<=a.length;j++) matrix[0][j]=j;
+
     for(let i=1;i<=b.length;i++){
         for(let j=1;j<=a.length;j++){
             const cost = a[j-1]===b[i-1]?0:1;
-            matrix[i][j] = Math.min(matrix[i-1][j]+1, matrix[i][j-1]+1, matrix[i-1][j-1]+cost);
+            matrix[i][j] = Math.min(
+                matrix[i-1][j]+1,
+                matrix[i][j-1]+1,
+                matrix[i-1][j-1]+cost
+            );
         }
     }
     return matrix[b.length][a.length];
 }
 
 function similarity(s1,s2){
-    s1 = s1.toLowerCase(); s2 = s2.toLowerCase();
+    s1 = s1.toLowerCase();
+    s2 = s2.toLowerCase();
+
     const longer = s1.length > s2.length ? s1 : s2;
     const shorter = s1.length > s2.length ? s2 : s1;
+
     if(longer.length===0) return 1.0;
+
     return (longer.length - levenshteinDistance(longer, shorter)) / longer.length;
 }
 
-// Enhanced reply logic
-function getBotReply(input){
-    const userInput = input.toLowerCase();
+// ================= TOPIC DETECTION =================
+function detectTopic(text){
+    if(text.includes("business")) return "business";
+    if(text.includes("finance") || text.includes("money") || text.includes("profit")) return "finance";
+    if(text.includes("marketing")) return "marketing";
+    if(text.includes("product") || text.includes("service")) return "product";
+    return "";
+}
 
-    // 1️⃣ Intent matching
-    let bestIntent = null; let bestScore = 0;
+// ================= CONTEXT RESOLVER =================
+function resolveContext(text){
+    if(text.includes("it") || text.includes("this") || text.includes("that")){
+        return lastTopic;
+    }
+    return text;
+}
+
+// ================= MAIN BOT =================
+function getBotReply(input){
+    let userInput = input.toLowerCase();
+
+    // 1️⃣ Detect topic
+    const detected = detectTopic(userInput);
+    if(detected !== ""){
+        lastTopic = detected;
+    }
+
+    // 2️⃣ Resolve context (it -> business etc.)
+    const context = resolveContext(userInput);
+
+    // 3️⃣ Intent matching (fuzzy)
+    let bestIntent = null;
+    let bestScore = 0;
+
     for(const intent of intents){
         for(const pattern of intent.patterns){
             const score = similarity(userInput, pattern);
             if(score > bestScore){
-                bestScore = score; bestIntent = intent;
+                bestScore = score;
+                bestIntent = intent;
             }
         }
     }
-    if(bestScore>0.6 && bestIntent){
+
+    if(bestScore > 0.55 && bestIntent){
         return bestIntent.responses[Math.floor(Math.random()*bestIntent.responses.length)];
     }
 
-    // 2️⃣ Smart fallback by topic keywords
-    const topics = [
-        {words:["business","company","entrepreneurship"], reply:"It seems you're asking about business. A business provides goods or services to customers for profit."},
-        {words:["finance","money","profit","revenue"], reply:"Looks like you're asking about finance. Finance manages money, revenue, costs, and profit."},
-        {words:["marketing","advertising","branding"], reply:"You're asking about marketing. Marketing promotes and sells products or services."},
-        {words:["product","service"], reply:"It seems you're asking about products or services. A product is sold, a service is provided to customers."}
-    ];
-    for(const topic of topics){
-        for(const w of topic.words){
-            if(userInput.includes(w)) return topic.reply;
+    // 4️⃣ SMART CONTEXT RESPONSES
+
+    // BUSINESS
+    if(context.includes("business")){
+        if(userInput.includes("start") || userInput.includes("how")){
+            return `Starting a business involves several important steps:
+
+1. Develop a clear idea 💡  
+2. Research the market 📊  
+3. Create a business plan 📝  
+4. Secure funding 💰  
+5. Register your business legally 📄  
+6. Start marketing your product 📢  
+
+👉 Do you want a real example of a business idea?`;
+        }
+
+        return `A business is an organization that provides goods or services to customers in order to make profit.
+
+Businesses are important because they create jobs, provide products, and help the economy grow.
+
+👉 Do you want to learn how to start one?`;
+    }
+
+    // FINANCE
+    if(context.includes("finance")){
+        return `Finance is about managing money, including income, expenses, and profit.
+
+It helps businesses make decisions and stay successful.
+
+👉 Want an example of profit calculation?`;
+    }
+
+    // MARKETING
+    if(context.includes("marketing")){
+        return `Marketing is the process of promoting and selling products or services.
+
+It includes advertising, branding, and understanding customers.
+
+👉 Want to learn marketing strategies?`;
+    }
+
+    // YES FOLLOW-UP
+    if(userInput === "yes"){
+        if(lastTopic === "business"){
+            return "Great! Let's go deeper 🚀\n\nA successful business idea could be like starting an online store, a café, or even a tech service.\n\n👉 Do you want help creating your own idea?";
         }
     }
 
-    // 3️⃣ Smart fallback for question words
-    if(userInput.includes("how")) return "That’s a great question! Usually it involves steps or a process. Could you clarify the topic, like 'how to start a business'?";
-    if(userInput.includes("why")) return "Interesting question! Usually about purpose or reasons. Try specifying a topic like 'why profit matters'.";
-    if(userInput.includes("what")) return "Looks like you're asking for a definition. Specify the topic, like 'what is marketing'.";
-    if(userInput.includes("who")) return "Seems like a person question. Specify, like 'who is an entrepreneur'.";
-    if(userInput.includes("when")) return "You’re asking about timing. Clarify, like 'when to launch a business'.";
-    if(userInput.includes("where")) return "Seems like a location question. Clarify, like 'where to find customers'.";
+    // 5️⃣ Question fallback (SMARTER)
+    if(userInput.includes("how")){
+        if(lastTopic){
+            return `You're asking about how related to ${lastTopic}.
 
-    // 4️⃣ Default fallback
-    return "I'm not sure 🤔. Try asking about business, marketing, finance, or entrepreneurship!";
+Can you be a bit more specific? For example: "how to start ${lastTopic}"`;
+        }
+        return "That's a great question! Can you specify the topic?";
+    }
+
+    if(userInput.includes("what")){
+        return "You're asking for a definition. Try something like: 'What is business?'";
+    }
+
+    // 6️⃣ Default
+    return "I'm not sure 🤔. Try asking about business, marketing, or finance!";
 }
 
-// Typing animation
-function typeText(div,text,speed=30){div.textContent="";let i=0;const interval=setInterval(()=>{div.textContent+=text[i];i++;if(i>=text.length) clearInterval(interval);},speed);}
+// ================= UI =================
+function typeText(div,text,speed=20){
+    div.textContent="";
+    let i=0;
+    const interval=setInterval(()=>{
+        div.textContent+=text[i];
+        i++;
+        if(i>=text.length) clearInterval(interval);
+    },speed);
+}
 
-// Add message to chat
-function addMessage(text,sender,id=null,typing=false){
+function addMessage(text,sender,id=null){
     const chatBox=document.getElementById('chat-box');
     const msgDiv=document.createElement('div');
+
     msgDiv.classList.add('message',sender);
     if(id) msgDiv.id=id;
+
     chatBox.appendChild(msgDiv);
     chatBox.scrollTop=chatBox.scrollHeight;
-    if(typing){typeText(msgDiv,text,20);} else {msgDiv.textContent=text;}
+
+    typeText(msgDiv,text,20);
 }
 
-// Open page helper
-function openPage(page){window.location.href=page;}
-
-// Send message
 function sendMessage(){
-    const input=$("#user-input").val().trim(); if(!input) return;
-    addMessage(input,'user'); $("#user-input").val("");
-    const loadingId="msg-"+Date.now(); addMessage("Thinking...",'bot',loadingId);
+    const input=$("#user-input").val().trim();
+    if(!input) return;
+
+    addMessage(input,'user');
+    $("#user-input").val("");
+
+    const loadingId="msg-"+Date.now();
+    addMessage("Thinking...",'bot',loadingId);
+
     setTimeout(()=>{
         const reply=getBotReply(input);
         const msgDiv=document.getElementById(loadingId);
-        msgDiv.classList.remove('loading'); typeText(msgDiv,reply,20);
+        typeText(msgDiv,reply,20);
     },500+Math.random()*800);
 }
 
