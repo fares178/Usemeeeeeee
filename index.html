@@ -174,7 +174,8 @@ const intents = [
 
     // ADD MORE UP TO ~200 INTENTS
 ];// ================= CONTEXT MEMORY =================
-let lasttopic = "";
+// ================= CONTEXT MEMORY =================
+let lastTopic = "";
 
 // ================= LEVENSHTEIN =================
 function levenshteinDistance(a, b){
@@ -345,7 +346,6 @@ function addMessage(text,sender,id=null){
 
     typeText(msgDiv,text,20);
 }
-function openPage(page){window.location.href=page;}
 
 function sendMessage(){
     const input=$("#user-input").val().trim();
@@ -363,7 +363,7 @@ function sendMessage(){
         typeText(msgDiv,reply,20);
     },500+Math.random()*800);
 }
-
+function openPage(page){window.location.href=page;}
 // Enter key sends
 $("#user-input").on('keypress',function(e){if(e.key==='Enter') sendMessage();});
 
