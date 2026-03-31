@@ -295,7 +295,6 @@ const intents = [
     // ADD MORE UP TO ~200 INTENTS
 ];// ================= CONTEXT MEMORY =================
 // ================= CONTEXT MEMORY =================
-let lastTopic = "";
 
 // ================= PERSONALITY =================
 let lastTopic = "";
@@ -303,7 +302,7 @@ let lastTopic = "";
 // ================= PERSONALITY =================
 const personality = {
     name: "ZenoBot",
-    emojiSet: ["😎","😂","🤔","🔥","👀","💡"],
+    emojiSet: ["😎","🔥","👀","💡"],
 
     randomEmoji(){
         return this.emojiSet[Math.floor(Math.random()*this.emojiSet.length)];
