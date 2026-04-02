@@ -349,17 +349,25 @@ function similarity(s1,s2){
 }
 
 // ================= DYNAMIC DATA (STOCKS) =================
-async function getStockPrice(ticker){
-    const apiKey = "8d387ee577424308bb8b6e103f133559"; 
-    const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${apiKey}`;
+async function getNews(query) {
+    const apiKey = "8d387ee577424308bb8b6e103f133559";
+    const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&apiKey=${apiKey}&pageSize=5`;
+
     try {
         const res = await fetch(url);
         const data = await res.json();
-        const price = data["Global Quote"] ? data["Global Quote"]["05. price"] : null;
-        if(!price) return `I couldn't find the price for ${ticker}. Make sure the symbol is correct.`;
-        return `The current price of ${ticker} is $${parseFloat(price).toFixed(2)}.`;
-    } catch(e) {
-        return "I'm having trouble connecting to the stock market right now.";
+        if (data.articles && data.articles.length > 0) {
+            let reply = "Here are the latest articles:\n";
+            data.articles.forEach((a, i) => {
+                reply += `${i+1}. ${a.title} (${a.source.name})\n${a.url}\n\n`;
+            });
+            return reply;
+        } else {
+            return "Sorry, I couldn't find any news on that topic.";
+        }
+    } catch (err) {
+        console.error(err);
+        return "Sorry, there was an error fetching the news.";
     }
 }
 
@@ -432,7 +440,11 @@ async function getBotReply(input){
 
             return bestIntent.responses[Math.floor(Math.random()*bestIntent.responses.length)];
         }
-
+        // Check if the question is about news
+        if(userInput.includes("news") || userInput.includes("latest") || userInput.includes("update") || userInput.includes("articles")){
+    // Call the async function and return
+    return await getNews(userInput); // make sure getBotReply is now async
+}
         // 5. Smart Responses (Fallback)
         if(userInput.includes("purpose") && (userInput.includes("business") || lastTopic === "business")){
             lastTopic = "business";
