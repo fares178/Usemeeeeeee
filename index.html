@@ -385,10 +385,22 @@ function getBotReply(input){
             }
         }
 
-        if(bestScore > 0.55 && bestIntent){
-            lastTopic = bestIntent.tag;
-            return bestIntent.responses[Math.floor(Math.random()*bestIntent.responses.length)];
-        }
+        // inside getBotReply...
+
+if(bestScore > 0.55 && bestIntent){
+    // Map specific tags to the broad categories used in your follow-up switch
+    const tag = bestIntent.tag;
+    
+    if(["profit", "revenue", "costs", "assets", "liabilities", "budget"].includes(tag)) {
+        lastTopic = "finance";
+    } else if(["advertising", "branding", "target_market", "seo"].includes(tag)) {
+        lastTopic = "marketing";
+    } else {
+        lastTopic = "business"; // Default to business for everything else
+    }
+
+    return bestIntent.responses[Math.floor(Math.random()*bestIntent.responses.length)];
+}
 
         // 4️⃣ SMART RESPONSES (your previous business/finance/marketing logic)
         // ...
