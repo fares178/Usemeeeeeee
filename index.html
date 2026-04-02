@@ -353,28 +353,7 @@ function similarity(s1,s2){
 
     return (longer.length - levenshteinDistance(longer, shorter)) / longer.length;
 }
-function splitQuestions(input) {
-    return input
-        .toLowerCase()
-        .split(/and|,|\?/)
-        .map(q => q.trim())
-        .filter(q => q.length > 0);
-}
 
-function handleInput(input) {
-    let questions = splitQuestions(input);
-
-    let answers = [];
-
-    for (let q of questions) {
-        let response = getBotReply(q); // uses your existing logic + context
-        answers.push(response);
-    }
-
-    return answers.join("\n\n"); // cleaner output
-}
-    return answers.join(" ");
-}
 // ================= CONTEXT RESOLVER =================
 function resolveContext(text){
     if((text.includes("it") || text.includes("this") || text.includes("that")) && lastTopic){
