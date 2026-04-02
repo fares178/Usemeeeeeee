@@ -421,11 +421,17 @@ async function getBotReply(input){
 
         // 2️⃣ Stock Price Detection
         const stockMatch = userInput.match(/price of (\w+)/i);
-        if(stockMatch){
-            const ticker = stockMatch[1].toUpperCase();
-            lastTopic = "finance";
-            return await getStockPrice(ticker);
-        }
+    if(stockMatch){
+        const ticker = stockMatch[1].toUpperCase();
+        lastTopic = "finance";
+        return await getStockPrice(ticker);
+    }
+
+    // 2️⃣ Check News
+    if(userInput.includes("news") || userInput.includes("latest") || userInput.includes("update") || userInput.includes("articles")){
+        return await getNews(userInput);
+    }
+
 
         // 3️⃣ News Detection
         if(userInput.includes("news") || userInput.includes("latest") || userInput.includes("update") || userInput.includes("articles")){
@@ -510,19 +516,9 @@ async function sendMessage() {
     const loadingId = "msg-" + Date.now();
     addMessage("Thinking...", 'bot', loadingId);
 
-    setTimeout(async () => {
-        const questions = input.toLowerCase().split(/and|[\.\?]/g).filter(q => q.trim().length > 2);
-        let finalReply = "";
-
-        if (questions.length > 1) {
-            const replies = [];
-            for(const q of questions){
-                replies.push(await getBotReply(q.trim()));
-            }
-            finalReply = replies.join("\n\n---\n\n");
-        } else {
-            finalReply = await getBotReply(input);
-        }
+    try {
+        // Call getBotReply directly, without splitting yet
+        let finalReply = await getBotReply(input);
 
         const msgDiv = document.getElementById(loadingId);
         msgDiv.innerHTML = "";
@@ -531,7 +527,12 @@ async function sendMessage() {
         if (typeof speakResponse === "function") {
             speakResponse(finalReply.replace(/---/g, ""));
         }
-    }, 600);
+    } catch (err) {
+        console.error(err);
+        const msgDiv = document.getElementById(loadingId);
+        msgDiv.innerHTML = "";
+        typeText(msgDiv, "Error fetching response ⚠️", 20);
+    }
 }
 
 // Enter key sends
