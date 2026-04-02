@@ -317,19 +317,30 @@ function resolveContext(text){
     }
     return text;
 }
-
-// ================= MAIN BOT =================
 function getBotReply(input){
     try{
         let userInput = input.toLowerCase();
 
-        // Resolve context
+        // 1️⃣ FOLLOW-UP HANDLERS FIRST
+        if(userInput.includes("and why") || userInput === "why?"){
+            return explainReason(lastTopic);
+        }
+
+        if(userInput.includes("give example") || userInput.includes("example")){
+            return giveExample(lastTopic);
+        }
+
+        if(userInput.includes("explain more") || userInput.includes("elaborate")){
+            return elaborateTopic(lastTopic);
+        }
+
+        // 2️⃣ Resolve context for new questions
         const context = resolveContext(userInput);
         if(context && context !== userInput){
-    userInput += " " + context;
-}
+            userInput += " " + context;
+        }
 
-        // 1️⃣ Intent matching
+        // 3️⃣ Intent matching (only for new questions)
         let bestIntent = null;
         let bestScore = 0;
 
@@ -346,60 +357,25 @@ function getBotReply(input){
         }
 
         if(bestScore > 0.55 && bestIntent){
-            lastTopic = bestIntent.tag; // ✅ update topic safely
+            lastTopic = bestIntent.tag;
             return bestIntent.responses[Math.floor(Math.random()*bestIntent.responses.length)];
         }
-        // ================= FOLLOW-UP HANDLERS =================
-if(userInput.includes("and why") || userInput === "why?"){
-    switch(lastTopic){
-        case "business":
-            return "Because businesses create value for customers and society, while also generating profit and jobs.";
-        case "finance":
-            return "Because managing finance properly ensures sustainability, growth, and smarter investment decisions.";
-        case "marketing":
-            return "Because effective marketing connects products to the right customers and drives business success.";
-        default:
-            return "Because understanding this topic helps make better decisions in that area.";
-    }
-}
 
-if(userInput.includes("give example") || userInput.includes("example")){
-    switch(lastTopic){
-        case "business":
-            return "For example, a small café, an online store, or a tech service company are all businesses.";
-        case "finance":
-            return "For example, creating a budget, investing in stocks, or managing cash flow are finance actions.";
-        case "marketing":
-            return "For example, running social media campaigns or email marketing to reach customers.";
-        default:
-            return "For example, real-life scenarios related to this topic help illustrate the idea.";
-    }
-}
+        // 4️⃣ SMART RESPONSES (your previous business/finance/marketing logic)
+        // ...
+        // ================= SMART RESPONSES =================
 
-if(userInput.includes("explain more") || userInput.includes("elaborate")){
-    switch(lastTopic){
-        case "business":
-            return "Businesses not only aim for profit but also solve problems, satisfy customer needs, and contribute to the economy. They can vary from small local shops to large multinational companies.";
-        case "finance":
-            return "Finance includes budgeting, investing, saving, managing expenses, and planning for the future. Good financial decisions help individuals and businesses thrive.";
-        case "marketing":
-            return "Marketing involves identifying customer needs, creating valuable offers, and communicating them effectively. Strategies include advertising, promotions, and social media engagement.";
-        default:
-            return "This topic has many details. Learning more about it can help you understand it deeply and make smarter decisions.";
-    }
-}
-
-        // 2️⃣ SMART RESPONSES
-
-        // BUSINESS
-        if(userInput.includes("purpose") && (userInput.includes("business") || lastTopic === "business")){
+// BUSINESS
+if(userInput.includes("purpose") && (userInput.includes("business") || lastTopic === "business")){
+    lastTopic = "business";
     return "The purpose of a business is to provide goods or services that satisfy customer needs while making profit. It also aims to grow, create value, and contribute to the economy.";
 }
-        if(context.includes("business")){
-            lastTopic = "business";
 
-            if(userInput.includes("start") || userInput.includes("how")){
-                return `Starting a business involves several steps:
+if(context.includes("business")){
+    lastTopic = "business";
+
+    if(userInput.includes("start") || userInput.includes("how")){
+        return `Starting a business involves several steps:
 
 1. Develop an idea 💡  
 2. Research the market 📊  
@@ -409,37 +385,37 @@ if(userInput.includes("explain more") || userInput.includes("elaborate")){
 6. Launch and market 🚀  
 
 👉 Want a real example?`;
-            }
+    }
 
-            return `A business is an organization that provides goods or services to make profit.
+    return `A business is an organization that provides goods or services to make profit.
 
 It helps the economy and creates jobs.
 
 👉 Do you want to learn how to start one?`;
-        }
+}
 
-        // FINANCE
-        if(context.includes("finance") || context.includes("money") || context.includes("profit")){
-            lastTopic = "finance";
+// FINANCE
+if(context.includes("finance") || context.includes("money") || context.includes("profit")){
+    lastTopic = "finance";
 
-            return `Finance is about managing money, including income, expenses, and profit.
+    return `Finance is about managing money, including income, expenses, and profit.
 
 👉 Want an example?`;
-        }
+}
 
-        // MARKETING
-        if(context.includes("marketing")){
-            lastTopic = "marketing";
+// MARKETING
+if(context.includes("marketing")){
+    lastTopic = "marketing";
 
-            return `Marketing is promoting and selling products or services.
+    return `Marketing is promoting and selling products or services.
 
 👉 Want strategies?`;
-        }
+}
 
-        // YES FOLLOW-UP
-        if(userInput === "yes"){
-            if(lastTopic === "business"){
-                return `Great! 🚀
+// YES FOLLOW-UP
+if(userInput === "yes"){
+    if(lastTopic === "business"){
+        return `Great! 🚀
 
 Example business ideas:
 - Online store 🛒  
@@ -447,25 +423,22 @@ Example business ideas:
 - Tech service 💻  
 
 👉 Want help choosing one?`;
-            }
-        }
+    }
+}
 
-        // 3️⃣ QUESTION HELP
-        if(userInput.includes("how")){
-            if(lastTopic){
-                return `You're asking about how related to ${lastTopic}.
+// QUESTION HELP
+if(userInput.includes("how")){
+    if(lastTopic){
+        return `You're asking about how related to ${lastTopic}.
 
 Try: "how to start ${lastTopic}"`;
-            }
-            return "That's a great question! Can you specify the topic?";
-        }
+    }
+    return "That's a great question! Can you specify the topic?";
+}
 
-        if(userInput.includes("what")){
-            return "Try asking: 'What is business?' or 'What is marketing?'";
-        }
-
-        // 4️⃣ DEFAULT
-        return "I'm not sure 🤔. Try asking about business, marketing, or finance!";
+if(userInput.includes("what")){
+    return "Try asking: 'What is business?' or 'What is marketing?'";
+}
 
     } catch(error){
         console.error(error);
