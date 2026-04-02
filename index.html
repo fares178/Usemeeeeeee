@@ -471,7 +471,7 @@ function addMessage(text, sender, id=null){
     chatBox.scrollTop = chatBox.scrollHeight;
     if(!id) typeText(msgDiv, text, 20); 
 }
-
+function openPage(page){window.location.href=page;}
 async function sendMessage() {
     const input = $("#user-input").val().trim();
     if (!input) return;
