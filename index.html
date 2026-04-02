@@ -170,7 +170,104 @@ const intents = [
 8️⃣ Build Your Product/Service  
 9️⃣ Marketing  
 🔟 Launch & Grow`
-    ]}
+    ]},
+    // STRATEGY & ANALYSIS
+    {tag:"swot_analysis",patterns:["what is swot","swot analysis","internal and external analysis"],responses:["SWOT stands for Strengths, Weaknesses, Opportunities, and Threats. It is a framework used to evaluate a company's competitive position."]},
+    {tag:"business_plan",patterns:["what is a business plan","importance of business plan"],responses:["A business plan is a formal document outlining a business's goals and how it plans to achieve them."]},
+    {tag:"unique_selling_proposition",patterns:["what is usp","unique selling point","value proposition"],responses:["A USP is the specific factor that makes your business better than the competition."]},
+    {tag:"scalability",patterns:["what is scalability","scaling a business"],responses:["Scalability is the ability of a business to grow and handle increased demand without being held back by its structure or resources."]},
+    {tag:"niche_market",patterns:["what is a niche","niche market meaning"],responses:["A niche market is a small, specialized section of the population that a business targets."]},
+
+    // DIGITAL PRESENCE & TECH
+    {tag:"seo",patterns:["what is seo","search engine optimization"],responses:["SEO is the process of improving your website to increase its visibility when people search for products or services."]},
+    {tag:"social_media_marketing",patterns:["social media marketing","marketing on instagram","facebook ads"],responses:["This involves using social media platforms to connect with your audience to build your brand and increase sales."]},
+    {tag:"content_marketing",patterns:["what is content marketing"],responses:["Content marketing focuses on creating and sharing valuable, relevant content to attract and retain customers."]},
+    {tag:"saas",patterns:["what is saas","software as a service"],responses:["SaaS is a software distribution model where a provider hosts applications and makes them available to customers over the internet."]},
+    {tag:"b2b",patterns:["what is b2b","business to business"],responses:["B2B describes businesses that sell products or services to other businesses rather than to individual consumers."]},
+    {tag:"b2c",patterns:["what is b2c","business to consumer"],responses:["B2C refers to businesses selling products and services directly to individual customers."]},
+
+    // CUSTOMER EXPERIENCE
+    {tag:"customer_retention",patterns:["customer retention","keeping customers"],responses:["Customer retention refers to the activities a company uses to reduce the number of customer defections."]},
+    {tag:"customer_feedback",patterns:["importance of feedback","customer reviews"],responses:["Feedback helps businesses understand customer needs and improve their products or services."]},
+    {tag:"crm",patterns:["what is crm","customer relationship management"],responses:["CRM is technology for managing all your company’s relationships and interactions with customers and potential customers."]},
+    {tag:"user_experience",patterns:["what is ux","user experience"],responses:["UX refers to the overall experience a person has when interacting with a product, especially in terms of how easy or pleasing it is to use."]},
+
+    // ADVANCED FINANCE & LEGAL
+    {tag:"roi",patterns:["what is roi","return on investment"],responses:["ROI is a measure used to evaluate the efficiency of an investment."]},
+    {tag:"equity_financing",patterns:["what is equity financing"],responses:["Equity financing is the process of raising capital through the sale of shares in an enterprise."]},
+    {tag:"debt_financing",patterns:["what is debt financing","business loans"],responses:["Debt financing occurs when a firm raises money for working capital or capital expenditures by selling debt instruments (loans)."]},
+    {tag:"intellectual_property",patterns:["what is ip","intellectual property"],responses:["IP refers to creations of the mind, such as inventions, literary works, designs, symbols, and names used in commerce."]},
+    {tag:"trademark",patterns:["what is a trademark","brand protection"],responses:["A trademark is a recognizable sign, design, or expression which identifies products or services of a particular source."]},
+    {tag:"patent",patterns:["what is a patent"],responses:["A patent is a government authority or license conferring a right or title for a set period, especially the sole right to exclude others from making, using, or selling an invention."]},
+
+    // OPERATIONS & LOGISTICS
+    {tag:"supply_chain",patterns:["supply chain management","scm"],responses:["The supply chain is the entire process of making and selling commercial goods, from the supply of materials to the sale to the customer."]},
+    {tag:"outsourcing",patterns:["what is outsourcing"],responses:["Outsourcing is hiring a party outside a company to perform services or create goods that were traditionally performed in-house."]},
+    {tag:"inventory_management",patterns:["inventory management","stock control"],responses:["Inventory management is the process of ordering, storing, using, and selling a company's inventory."]},
+    {tag:"wholesale",patterns:["what is wholesale"],responses:["Wholesale is the sale of goods in large quantities to be retailed by others."]},
+
+    // MISC / INTERACTIVE
+    {tag:"business_joke",patterns:["tell me a business joke","joke about work"],responses:["Why did the doughnut maker retire? He was tired of the hole business!"]},
+    {tag:"motivation_quote",patterns:["give me a quote","business motivation"],responses:["'The way to get started is to quit talking and begin doing.' - Walt Disney"]},
+    {tag:"pivot",patterns:["what is a pivot","business pivot"],responses:["A pivot is when a company shifts its business strategy to accommodate changes in its industry, customer preferences, or competition."]},
+    // CORE ASPECTS OF MAKING A BUSINESS
+    {tag:"value_creation",patterns:["main aspect of business","core of business","value creation"],responses:["The main aspect of a business is creating value. If you provide something that people find useful, they will be willing to pay for it."]},
+    {tag:"problem_solving",patterns:["solving problems","business ideas come from","identifying needs"],responses:["Successful businesses are built on solving a specific problem for a specific group of people. No problem, no business."]},
+    {tag:"sustainability",patterns:["business sustainability","long term success"],responses:["A key aspect of making a business is ensuring it is sustainable—meaning it can generate enough profit to continue operating for years to come."]},
+    {tag:"value_proposition",patterns:["what is a value proposition","why should customers buy"],responses:["A value proposition is the core reason why a customer should choose you over a competitor. it defines the unique benefit you provide."]},
+    {tag:"customer_centricity",patterns:["importance of customers","focusing on the customer"],responses:["The heart of any business is the customer. Without understanding and serving their needs, a business cannot survive."]},
+
+    // LEGAL & STRUCTURAL ASPECTS
+    {tag:"business_structure",patterns:["types of business","legal structure","sole proprietorship","llc"],responses:["Choosing a structure (like a Sole Proprietorship, Partnership, or LLC) is a main aspect that affects your taxes, liability, and paperwork."]},
+    {tag:"business_model",patterns:["what is a business model","how to make money"],responses:["A business model is your 'map' for making money. It explains what you sell, who you sell to, and how you deliver that value."]},
+    
+    // THE PEOPLE ASPECT
+    {tag:"human_capital",patterns:["importance of employees","people in business","hiring the right team"],responses:["A business is only as good as its people. Building a team with the right skills and culture is a vital aspect of growth."]},
+    {tag:"company_culture",patterns:["what is company culture","work environment"],responses:["Culture is the shared values and behaviors of a company. A strong culture keeps employees motivated and loyal."]},
+
+    // THE EXECUTION ASPECT
+    {tag:"execution",patterns:["importance of execution","idea vs execution"],responses:["Having an idea is easy; the main aspect of business is execution—the ability to turn that idea into a working, profitable reality."]},
+    {tag:"iteration",patterns:["pivot and change","improving the business","iteration"],responses:["Making a business involves constant iteration: listening to feedback, fixing what's broken, and improving your product over time."]},
+    {tag:"resilience",patterns:["business mindset","staying in business","resilience"],responses:["Mental toughness is a key aspect. Most businesses face failures early on, so the ability to bounce back is essential."]},
+
+    // FINANCIAL VIABILITY
+    {tag:"profitability",patterns:["is the business viable","making a profit","financial health"],responses:["A business must eventually become profitable. If expenses always exceed revenue, it's a hobby, not a business."]},
+    {tag:"capital",patterns:["starting capital","funding the business"],responses:["You need resources—whether it's your own savings, a loan, or investors—to get the engine of your business running."]},
+    // STRATEGIC FOUNDATIONS
+    {tag:"market_need",patterns:["identifying a market need","gap in the market","finding an opportunity"],responses:["A main aspect of making a business is finding a 'gap'—a problem that isn't being solved well by others—and filling it."]},
+    {tag:"timing",patterns:["importance of timing","business timing","when to launch"],responses:["Timing is a critical aspect. Launching too early (before the market is ready) or too late (when it's crowded) can determine success or failure."]},
+    {tag:"differentiation",patterns:["how to stand out","differentiation strategy"],responses:["To succeed, a business must be different. This could be through lower prices, better quality, faster service, or a unique brand personality."]},
+
+    // CUSTOMER ACQUISITION & RETENTION
+    {tag:"customer_acquisition_cost",patterns:["what is cac","cost to get a customer"],responses:["CAC is the total cost of sales and marketing efforts needed to convince a customer to buy a product or service."]},
+    {tag:"lifetime_value",patterns:["what is ltv","customer lifetime value"],responses:["LTV is the total amount of money a customer is expected to spend with your business during their entire relationship with you."]},
+    {tag:"customer_persona",patterns:["what is a buyer persona","ideal customer profile"],responses:["A customer persona is a detailed description of your target customer, including their age, interests, pain points, and buying habits."]},
+
+    // THE PRODUCT ECOSYSTEM
+    {tag:"mvp",patterns:["what is mvp","minimum viable product"],responses:["An MVP is the simplest version of a product that allows you to start the learning process and get customer feedback as quickly as possible."]},
+    {tag:"product_market_fit",patterns:["what is product market fit","pmf meaning"],responses:["Product-Market Fit is the stage where your product perfectly satisfies a strong market demand. It's the 'holy grail' for startups."]},
+    {tag:"scalability_vs_growth",patterns:["growth vs scaling"],responses:["Growth means adding resources at the same rate as revenue; Scaling means increasing revenue much faster than you add costs."]},
+
+    // ADVANCED OPERATIONS
+    {tag:"standard_operating_procedures",patterns:["what is sop","standard procedures"],responses:["SOPs are step-by-step instructions to help employees carry out complex routine operations consistently."]},
+    {tag:"automation",patterns:["business automation","using tools to save time"],responses:["Automation involves using technology to perform repetitive tasks, allowing you to focus on high-level strategy and creativity."]},
+    {tag:"supply_chain_resilience",patterns:["supply chain issues","managing suppliers"],responses:["A strong business must have a resilient supply chain, meaning it has backup plans if a supplier fails or shipping is delayed."]},
+
+    // LEADERSHIP & CULTURE
+    {tag:"vision_statement",patterns:["what is a vision statement","company vision"],responses:["A vision statement describes where the company wants to be in the future (e.g., 'To be the world's most customer-centric company')."]},
+    {tag:"mission_statement",patterns:["what is a mission statement","company mission"],responses:["A mission statement defines the company's current purpose, what it does, and who it serves."]},
+    {tag:"core_values",patterns:["company values","business beliefs"],responses:["Core values are the guiding principles that dictate behavior and action within a business."]},
+
+    // EXIT STRATEGIES (THE END GAME)
+    {tag:"exit_strategy",patterns:["what is an exit strategy","selling a business"],responses:["An exit strategy is a plan for how an entrepreneur will sell their company or transfer ownership to someone else."]},
+    {tag:"ipo",patterns:["what is an ipo","going public"],responses:["An Initial Public Offering (IPO) is when a private company offers shares to the public for the first time to raise capital."]},
+    {tag:"acquisition",patterns:["business acquisition","being bought out"],responses:["An acquisition occurs when one company buys most or all of another company's shares to take control of it."]},
+
+    // RISK & RECOVERY
+    {tag:"pivot_vs_persevere",patterns:["should i pivot or persevere","when to change direction"],responses:["Deciding whether to stick with a plan (persevere) or change the fundamental strategy (pivot) is one of the hardest aspects of management."]},
+    {tag:"burn_rate",patterns:["what is burn rate","spending money fast"],responses:["Burn rate is the pace at which a new company uses up its initial capital before generating positive cash flow."]},
+    {tag:"contingency_plan",patterns:["plan b","emergency business plan"],responses:["A contingency plan is a 'Plan B' for when things go wrong, such as a financial crisis or a major competitor entering the market."]},
+    
 
     // ADD MORE UP TO ~200 INTENTS
 ];
@@ -252,6 +349,45 @@ function getBotReply(input){
             lastTopic = bestIntent.tag; // ✅ update topic safely
             return bestIntent.responses[Math.floor(Math.random()*bestIntent.responses.length)];
         }
+        // ================= FOLLOW-UP HANDLERS =================
+if(userInput.includes("and why") || userInput === "why?"){
+    switch(lastTopic){
+        case "business":
+            return "Because businesses create value for customers and society, while also generating profit and jobs.";
+        case "finance":
+            return "Because managing finance properly ensures sustainability, growth, and smarter investment decisions.";
+        case "marketing":
+            return "Because effective marketing connects products to the right customers and drives business success.";
+        default:
+            return "Because understanding this topic helps make better decisions in that area.";
+    }
+}
+
+if(userInput.includes("give example") || userInput.includes("example")){
+    switch(lastTopic){
+        case "business":
+            return "For example, a small café, an online store, or a tech service company are all businesses.";
+        case "finance":
+            return "For example, creating a budget, investing in stocks, or managing cash flow are finance actions.";
+        case "marketing":
+            return "For example, running social media campaigns or email marketing to reach customers.";
+        default:
+            return "For example, real-life scenarios related to this topic help illustrate the idea.";
+    }
+}
+
+if(userInput.includes("explain more") || userInput.includes("elaborate")){
+    switch(lastTopic){
+        case "business":
+            return "Businesses not only aim for profit but also solve problems, satisfy customer needs, and contribute to the economy. They can vary from small local shops to large multinational companies.";
+        case "finance":
+            return "Finance includes budgeting, investing, saving, managing expenses, and planning for the future. Good financial decisions help individuals and businesses thrive.";
+        case "marketing":
+            return "Marketing involves identifying customer needs, creating valuable offers, and communicating them effectively. Strategies include advertising, promotions, and social media engagement.";
+        default:
+            return "This topic has many details. Learning more about it can help you understand it deeply and make smarter decisions.";
+    }
+}
 
         // 2️⃣ SMART RESPONSES
 
