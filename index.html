@@ -571,7 +571,7 @@ function sendMessage(){
     addMessage("Thinking...",'bot',loadingId);
 
     setTimeout(()=>{
-        const reply = getBotreply(input);
+        const reply=getBotReply(input);
         const msgDiv=document.getElementById(loadingId);
         typeText(msgDiv,reply,20);
     },500+Math.random()*800);
