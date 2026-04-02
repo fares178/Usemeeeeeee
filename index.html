@@ -322,16 +322,45 @@ function getBotReply(input){
         let userInput = input.toLowerCase();
 
         // 1️⃣ FOLLOW-UP HANDLERS FIRST
+   
+        // 2️⃣ FOLLOW-UP HANDLERS
         if(userInput.includes("and why") || userInput === "why?"){
-            return explainReason(lastTopic);
+            switch(lastTopic){
+                case "business":
+                    return "Because businesses create value for customers and society, while also generating profit and jobs.";
+                case "finance":
+                    return "Because managing finance properly ensures sustainability, growth, and smarter investment decisions.";
+                case "marketing":
+                    return "Because effective marketing connects products to the right customers and drives business success.";
+                default:
+                    return "Because understanding this topic helps make better decisions in that area.";
+            }
         }
 
         if(userInput.includes("give example") || userInput.includes("example")){
-            return giveExample(lastTopic);
+            switch(lastTopic){
+                case "business":
+                    return "For example, a small café, an online store, or a tech service company are all businesses.";
+                case "finance":
+                    return "For example, creating a budget, investing in stocks, or managing cash flow are finance actions.";
+                case "marketing":
+                    return "For example, running social media campaigns or email marketing to reach customers.";
+                default:
+                    return "For example, real-life scenarios related to this topic help illustrate the idea.";
+            }
         }
 
         if(userInput.includes("explain more") || userInput.includes("elaborate")){
-            return elaborateTopic(lastTopic);
+            switch(lastTopic){
+                case "business":
+                    return "Businesses not only aim for profit but also solve problems, satisfy customer needs, and contribute to the economy. They can vary from small local shops to large multinational companies.";
+                case "finance":
+                    return "Finance includes budgeting, investing, saving, managing expenses, and planning for the future. Good financial decisions help individuals and businesses thrive.";
+                case "marketing":
+                    return "Marketing involves identifying customer needs, creating valuable offers, and communicating them effectively. Strategies include advertising, promotions, and social media engagement.";
+                default:
+                    return "This topic has many details. Learning more about it can help you understand it deeply and make smarter decisions.";
+            }
         }
 
         // 2️⃣ Resolve context for new questions
