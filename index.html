@@ -592,33 +592,33 @@ function sendMessage() {
     const loadingId = "msg-" + Date.now();
     addMessage("Thinking...", 'bot', loadingId);
 
-    setTimeout(() => {
-        // --- MULTI-QUESTION LOGIC START ---
-        // Split by "and", ".", or "?"
-        const questions = input.toLowerCase().split(/and|[\.\?]/g).filter(q => q.trim().length > 2);
-        
-        let finalReply = "";
-        
-        if (questions.length > 1) {
-            // Process each question and join them with a clear break
-            const replies = questions.map(q => getBotReply(q.trim()));
-            finalReply = replies.join("\n\n---\n\n"); 
-        } else {
-            // Just a single question
-            finalReply = getBotReply(input);
-        }
-        // --- MULTI-QUESTION LOGIC END ---
+    setTimeout(async () => {
+    let finalReply = "";
 
-        const msgDiv = document.getElementById(loadingId);
-        msgDiv.innerHTML = ""; // Clear the "Thinking..." text
-        typeText(msgDiv, finalReply, 20);
-        
-        // If you have the voice function from before:
-        if (typeof speakResponse === "function") {
-            speakResponse(finalReply.replace(/-/g, "")); 
+    // --- MULTI-QUESTION LOGIC START ---
+    const questions = input.toLowerCase().split(/and|[\.\?]/g).filter(q => q.trim().length > 2);
+
+    if (questions.length > 1) {
+        // If multiple questions, handle each sequentially
+        const replies = [];
+        for(const q of questions){
+            const reply = await getBotReply(q.trim()); // await here for async responses
+            replies.push(reply);
         }
-    }, 500 + Math.random() * 800);
-}
+        finalReply = replies.join("\n\n---\n\n");
+    } else {
+        finalReply = await getBotReply(input); // await here
+    }
+    // --- MULTI-QUESTION LOGIC END ---
+
+    const msgDiv = document.getElementById(loadingId);
+    msgDiv.innerHTML = "";
+    typeText(msgDiv, finalReply, 20);
+
+    if (typeof speakResponse === "function") {
+        speakResponse(finalReply.replace(/-/g, ""));
+    }
+}, 500 + Math.random() * 800);
 
 // Enter key sends
 $("#user-input").on('keypress',function(e){if(e.key==='Enter') sendMessage();});
