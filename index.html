@@ -321,8 +321,12 @@ function getBotReply(input){
     try{
         let userInput = input.toLowerCase();
 
-        // 1️⃣ FOLLOW-UP HANDLERS FIRST
-   
+        // 1️⃣ Resolve context for pronouns
+        const context = resolveContext(userInput);
+        if(context && context !== userInput){
+            userInput += " " + context;
+        }
+
         // 2️⃣ FOLLOW-UP HANDLERS
         if(userInput.includes("and why") || userInput === "why?"){
             switch(lastTopic){
@@ -363,16 +367,9 @@ function getBotReply(input){
             }
         }
 
-        // 2️⃣ Resolve context for new questions
-        const context = resolveContext(userInput);
-        if(context && context !== userInput){
-            userInput += " " + context;
-        }
-
-        // 3️⃣ Intent matching (only for new questions)
+        // 3️⃣ Intent matching
         let bestIntent = null;
         let bestScore = 0;
-
         if(typeof intents !== "undefined"){
             for(const intent of intents){
                 for(const pattern of intent.patterns){
@@ -384,27 +381,19 @@ function getBotReply(input){
                 }
             }
         }
-
         if(bestScore > 0.55 && bestIntent){
             lastTopic = bestIntent.tag;
             return bestIntent.responses[Math.floor(Math.random()*bestIntent.responses.length)];
         }
 
-        // 4️⃣ SMART RESPONSES (your previous business/finance/marketing logic)
-        // ...
-        // ================= SMART RESPONSES =================
+        // 4️⃣ SMART RESPONSES
 
-// BUSINESS
-if(userInput.includes("purpose") && (userInput.includes("business") || lastTopic === "business")){
-    lastTopic = "business";
-    return "The purpose of a business is to provide goods or services that satisfy customer needs while making profit. It also aims to grow, create value, and contribute to the economy.";
-}
+        // BUSINESS
+        if(userInput.includes("business") || lastTopic === "business"){
+            lastTopic = "business";
 
-if(context.includes("business")){
-    lastTopic = "business";
-
-    if(userInput.includes("start") || userInput.includes("how")){
-        return `Starting a business involves several steps:
+            if(userInput.includes("start") || userInput.includes("how")){
+                return `Starting a business involves several steps:
 
 1. Develop an idea 💡  
 2. Research the market 📊  
@@ -414,37 +403,36 @@ if(context.includes("business")){
 6. Launch and market 🚀  
 
 👉 Want a real example?`;
-    }
+            }
 
-    return `A business is an organization that provides goods or services to make profit.
+            if(userInput.includes("purpose") && userInput.includes("business")){
+    lastTopic = "business";
+    return "The purpose of a business is to provide goods or services that satisfy customer needs while making profit. It also aims to grow, create value, and contribute to the economy.";
 
-It helps the economy and creates jobs.
 
 👉 Do you want to learn how to start one?`;
-}
+        }
 
-// FINANCE
-if(context.includes("finance") || context.includes("money") || context.includes("profit")){
-    lastTopic = "finance";
-
-    return `Finance is about managing money, including income, expenses, and profit.
+        // FINANCE
+        if(userInput.includes("finance") || lastTopic === "finance" || userInput.includes("money") || userInput.includes("profit")){
+            lastTopic = "finance";
+            return `Finance is about managing money, including income, expenses, and profit.
 
 👉 Want an example?`;
-}
+        }
 
-// MARKETING
-if(context.includes("marketing")){
-    lastTopic = "marketing";
-
-    return `Marketing is promoting and selling products or services.
+        // MARKETING
+        if(userInput.includes("marketing") || lastTopic === "marketing"){
+            lastTopic = "marketing";
+            return `Marketing is promoting and selling products or services.
 
 👉 Want strategies?`;
-}
+        }
 
-// YES FOLLOW-UP
-if(userInput === "yes"){
-    if(lastTopic === "business"){
-        return `Great! 🚀
+        // YES FOLLOW-UP
+        if(userInput === "yes"){
+            if(lastTopic === "business"){
+                return `Great! 🚀
 
 Example business ideas:
 - Online store 🛒  
@@ -452,29 +440,31 @@ Example business ideas:
 - Tech service 💻  
 
 👉 Want help choosing one?`;
-    }
-}
+            }
+        }
 
-// QUESTION HELP
-if(userInput.includes("how")){
-    if(lastTopic){
-        return `You're asking about how related to ${lastTopic}.
+        // QUESTION HELP
+        if(userInput.includes("how")){
+            if(lastTopic){
+                return `You're asking about how related to ${lastTopic}.
 
 Try: "how to start ${lastTopic}"`;
-    }
-    return "That's a great question! Can you specify the topic?";
-}
+            }
+            return "That's a great question! Can you specify the topic?";
+        }
 
-if(userInput.includes("what")){
-    return "Try asking: 'What is business?' or 'What is marketing?'";
-}
+        if(userInput.includes("what")){
+            return "Try asking: 'What is business?' or 'What is marketing?'";
+        }
+
+        // DEFAULT
+        return "I'm not sure 🤔. Try asking about business, marketing, or finance!";
 
     } catch(error){
         console.error(error);
         return "Something went wrong ⚠️";
     }
 }
-
 // ================= UI =================
 function typeText(div,text,speed=20){
     if(!text) text = "Error";
