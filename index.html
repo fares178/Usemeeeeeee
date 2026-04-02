@@ -353,7 +353,15 @@ function similarity(s1,s2){
 
     return (longer.length - levenshteinDistance(longer, shorter)) / longer.length;
 }
-
+// --- DYNAMIC DATA FUNCTIONS ---
+async function getStockPrice(ticker){
+    const apiKey = "8d387ee577424308bb8b6e103f133559"; // Your key
+    const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${apiKey}`;
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const price = data["Global Quote"]["05. price"];
+        if(!price)
 // ================= CONTEXT RESOLVER =================
 function resolveContext(text){
     if((text.includes("it") || text.includes("this") || text.includes("that")) && lastTopic){
@@ -361,6 +369,7 @@ function resolveContext(text){
     }
     return text;
 }
+
 function getBotReply(input){
     try{
         let userInput = input.toLowerCase();
@@ -407,6 +416,19 @@ function getBotReply(input){
             }
         }
 
+        // --- STOCK PRICE CHECK ---
+       const stockMatch = input.match(/price of (\w+)/i);
+if(stockMatch){
+       const ticker = stockMatch[1].toUpperCase();
+    lastTopic = "finance"; // optional
+    return getStockPrice(ticker); // async function will fetch the live price
+}
+
+// ================= CONTEXT RESOLVER =================
+        const context = resolveContext(userInput);
+if(context && context !== userInput){
+    userInput += " " + context;
+}
         // 2️⃣ Resolve context for new questions
         const context = resolveContext(userInput);
         if(context && context !== userInput){
