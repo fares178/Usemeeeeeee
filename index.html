@@ -560,21 +560,42 @@ function addMessage(text,sender,id=null){
     typeText(msgDiv,text,20);
 }
 function openPage(page){window.location.href=page;}
-function sendMessage(){
-    const input=$("#user-input").val().trim();
-    if(!input) return;
+function sendMessage() {
+    const input = $("#user-input").val().trim();
+    if (!input) return;
 
-    addMessage(input,'user');
+    addMessage(input, 'user');
     $("#user-input").val("");
 
-    const loadingId="msg-"+Date.now();
-    addMessage("Thinking...",'bot',loadingId);
+    const loadingId = "msg-" + Date.now();
+    addMessage("Thinking...", 'bot', loadingId);
 
-    setTimeout(()=>{
-        const reply=getBotReply(input);
-        const msgDiv=document.getElementById(loadingId);
-        typeText(msgDiv,reply,20);
-    },500+Math.random()*800);
+    setTimeout(() => {
+        // --- MULTI-QUESTION LOGIC START ---
+        // Split by "and", ".", or "?"
+        const questions = input.toLowerCase().split(/and|[\.\?]/g).filter(q => q.trim().length > 2);
+        
+        let finalReply = "";
+        
+        if (questions.length > 1) {
+            // Process each question and join them with a clear break
+            const replies = questions.map(q => getBotReply(q.trim()));
+            finalReply = replies.join("\n\n---\n\n"); 
+        } else {
+            // Just a single question
+            finalReply = getBotReply(input);
+        }
+        // --- MULTI-QUESTION LOGIC END ---
+
+        const msgDiv = document.getElementById(loadingId);
+        msgDiv.innerHTML = ""; // Clear the "Thinking..." text
+        typeText(msgDiv, finalReply, 20);
+        
+        // If you have the voice function from before:
+        if (typeof speakResponse === "function") {
+            speakResponse(finalReply.replace(/-/g, "")); 
+        }
+    }, 500 + Math.random() * 800);
 }
 
 // Enter key sends
