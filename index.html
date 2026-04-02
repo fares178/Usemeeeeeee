@@ -317,6 +317,7 @@ function resolveContext(text){
     }
     return text;
 }
+
 function getBotReply(input){
     try{
         let userInput = input.toLowerCase();
@@ -400,7 +401,13 @@ if(userInput.includes("purpose") && (userInput.includes("business") || lastTopic
     return "The purpose of a business is to provide goods or services that satisfy customer needs while making profit. It also aims to grow, create value, and contribute to the economy.";
 }
 
-if(context.includes("business")){
+// ================= SMART RESPONSES + FOLLOW-UPS =================
+
+// FOLLOW-UP HANDLERS (check first!)
+
+
+// BUSINESS
+if((context.includes("business") || lastTopic === "business")){
     lastTopic = "business";
 
     if(userInput.includes("start") || userInput.includes("how")){
@@ -416,6 +423,10 @@ if(context.includes("business")){
 👉 Want a real example?`;
     }
 
+    if(userInput.includes("purpose")){
+        return "The purpose of a business is to provide goods or services that satisfy customer needs while making profit. It also aims to grow, create value, and contribute to the economy.";
+    }
+
     return `A business is an organization that provides goods or services to make profit.
 
 It helps the economy and creates jobs.
@@ -424,18 +435,16 @@ It helps the economy and creates jobs.
 }
 
 // FINANCE
-if(context.includes("finance") || context.includes("money") || context.includes("profit")){
+if((context.includes("finance") || lastTopic === "finance" || userInput.includes("money") || userInput.includes("profit"))){
     lastTopic = "finance";
-
     return `Finance is about managing money, including income, expenses, and profit.
 
 👉 Want an example?`;
 }
 
 // MARKETING
-if(context.includes("marketing")){
+if((context.includes("marketing") || lastTopic === "marketing")){
     lastTopic = "marketing";
-
     return `Marketing is promoting and selling products or services.
 
 👉 Want strategies?`;
@@ -467,12 +476,6 @@ Try: "how to start ${lastTopic}"`;
 
 if(userInput.includes("what")){
     return "Try asking: 'What is business?' or 'What is marketing?'";
-}
-
-    } catch(error){
-        console.error(error);
-        return "Something went wrong ⚠️";
-    }
 }
 
 // ================= UI =================
