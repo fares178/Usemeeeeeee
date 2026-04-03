@@ -433,19 +433,39 @@ function getBotReply(input){
 
 if(bestScore > 0.55 && bestIntent){
     // Map specific tags to the broad categories used in your follow-up switch
-    const tag = bestIntent.tag;
-    
-    if(["costs", "assets", "liabilities", "budget"].includes(tag)) {
-        lastTopic = "finance";
-    } else if(["advertising", "branding", "target_market", "seo"].includes(tag)) {
-        lastTopic = "marketing";
-    } else {
-        lastTopic = "business"; // Default to business for everything else
-    }
+    const topicMap = {
+    finance: ["profit","revenue","costs","loss","cash_flow","budget","investment","risk","assets","liabilities","equity","break_even","roi","equity_financing","debt_financing","capital","profitability","burn_rate"],
+    marketing: ["marketing","advertising","branding","target_market","seo","social_media_marketing","content_marketing","customer_acquisition_cost","customer_persona"],
+    operations: ["operations","production","quality","supply_chain","outsourcing","inventory_management","wholesale","automation","standard_operating_procedures","supply_chain_resilience"],
+    human_resources: ["human_resources","recruitment","training","motivation","human_capital","company_culture"],
+    strategy: ["swot_analysis","business_plan","unique_selling_proposition","scalability","niche_market","market_need","timing","differentiation","pivot","pivot_vs_persevere","contingency_plan"],
+    sales: ["sales","pricing","discount","customer_retention","customer_feedback","crm","lifetime_value"],
+    product: ["product","service","product_development","mvp","product_market_fit","iteration"],
+    market: ["market","demand","supply","competition"],
+    leadership: ["management","leadership","teamwork","communication","vision_statement","mission_statement","core_values"],
+    legal: ["intellectual_property","trademark","patent","business_structure"],
+    tech: ["saas","b2b","b2c","ecommerce","user_experience"],
+    general: ["business_definition","business_purpose","business_activity","business_success","business_growth","innovation","value_creation","problem_solving","sustainability","value_proposition","customer_centricity","execution","resilience"]
+};
 
-    return bestIntent.responses[Math.floor(Math.random()*bestIntent.responses.length)];
+// 🔹 Detect topic from tag
+let found = false;
+
+for (let topic in topicMap) {
+    if (topicMap[topic].includes(bestIntent.tag)) {
+        lastTopic = topic;
+        found = true;
+        break;
+    }
 }
 
+// 🔹 Optional: if no topic found
+if (!found) {
+    lastTopic = null; // or keep previous
+}
+
+// 🔹 Return response (same as before)
+return bestIntent.responses[Math.floor(Math.random() * bestIntent.responses.length)];
         // 4️⃣ SMART RESPONSES (your previous business/finance/marketing logic)
         // ...
         // ================= SMART RESPONSES =================
