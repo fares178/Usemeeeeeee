@@ -95,6 +95,10 @@ body.dark #voice-btn:hover {
                 <p class="suggestion">what is business</p>
                 <p class="suggestion">how to start a business</p>
                 <p class="suggestion">what is profit</p>
+                <p class="suggestion">latest business news</p>
+                <p class="suggestion">tech news</p>
+                <p class="suggestion">why did tesla stock drop</p>
+                <p class="suggestion">apple stock analysis</p>
             </div>
         </div>
 
@@ -312,6 +316,10 @@ const intents = [
     {tag:"burn_rate",patterns:["what is burn rate","spending money fast"],responses:["Burn rate is the pace at which a new company uses up its initial capital before generating positive cash flow."]},
     {tag:"contingency_plan",patterns:["plan b","emergency business plan"],responses:["A contingency plan is a 'Plan B' for when things go wrong, such as a financial crisis or a major competitor entering the market."]},
     
+    // NEWS & CURRENT EVENTS
+    {tag:"news",patterns:["what is the news","latest news","current news","business news","tell me the news"],responses:["Let me fetch the latest news for you..."]},
+    {tag:"news_business",patterns:["business news","recent business","what's happening in business"],responses:["Let me get the latest business news..."]},
+    {tag:"news_technology",patterns:["tech news","technology news","latest tech"],responses:["Let me get the latest technology news..."]},
 
     // ADD MORE UP TO ~200 INTENTS
 ];
@@ -354,6 +362,117 @@ function similarity(s1,s2){
     return (longer.length - levenshteinDistance(longer, shorter)) / longer.length;
 }
 
+// ================= API KEYS =================
+const NEWSAPI_KEY = "8d387ee577424308bb8b6e103f133559";
+const FINNHUB_KEY = "ctij4u9r01qjblgsfvtgctij4u9r01qjblgsfvug"; // Free Finnhub key
+
+// ================= NEWSAPI INTEGRATION =================
+async function fetchNews(keyword = "") {
+    try {
+        const query = keyword || "business";
+        const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&sortBy=publishedAt&language=en&pageSize=5&apiKey=${NEWSAPI_KEY}`;
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.articles && data.articles.length > 0) {
+            let newsText = `📰 Latest ${keyword ? keyword : "Business"} News:\n\n`;
+            
+            data.articles.slice(0, 5).forEach((article, index) => {
+                newsText += `${index + 1}. **${article.title}**\n`;
+                newsText += `   📅 ${new Date(article.publishedAt).toLocaleDateString()}\n`;
+                newsText += `   🔗 Source: ${article.source.name}\n`;
+                newsText += `   ${article.description ? article.description.substring(0, 100) + "..." : ""}\n\n`;
+            });
+            
+            return newsText;
+        } else {
+            return `No news found for "${keyword}". Try a different search term.`;
+        }
+    } catch (error) {
+        console.error("NewsAPI Error:", error);
+        return "Sorry, I couldn't fetch news at the moment. Please try again later.";
+    }
+}
+
+// ================= STOCK ANALYSIS INTEGRATION =================
+async function analyzeStockMovement(company, symbol) {
+    try {
+        // Fetch company news from Finnhub (free tier)
+        const newsUrl = `https://finnhub.io/api/v1/company-news?symbol=${symbol}&from=2026-04-01&to=2026-04-04&token=${FINNHUB_KEY}`;
+        const newsResponse = await fetch(newsUrl);
+        const newsData = await newsResponse.json();
+        
+        // Fetch latest business news about company
+        const businessNewsUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(company + " stock")}&sortBy=publishedAt&language=en&pageSize=3&apiKey=${NEWSAPI_KEY}`;
+        const businessResponse = await fetch(businessNewsUrl);
+        const businessData = await businessResponse.json();
+        
+        let analysis = `📊 **${company.toUpperCase()} Stock Analysis**\n\n`;
+        
+        // Check if we have recent news
+        if (newsData && newsData.length > 0) {
+            analysis += `📉 **Recent Developments:**\n\n`;
+            newsData.slice(0, 3).forEach((item, idx) => {
+                analysis += `${idx + 1}. ${item.headline}\n`;
+                analysis += `   Source: ${item.source}\n`;
+                analysis += `   ${item.summary ? item.summary.substring(0, 120) + "..." : ""}\n\n`;
+            });
+        }
+        
+        // Add business news analysis
+        if (businessData.articles && businessData.articles.length > 0) {
+            analysis += `\n💡 **Why It Moved:**\n\n`;
+            const articles = businessData.articles.slice(0, 3);
+            
+            // Sentiment analysis based on keywords
+            let positiveSignals = 0;
+            let negativeSignals = 0;
+            let headlines = "";
+            
+            articles.forEach((article, idx) => {
+                const text = (article.title + " " + article.description).toLowerCase();
+                
+                // Positive keywords
+                if (text.includes("surge") || text.includes("soar") || text.includes("rally") || 
+                    text.includes("gain") || text.includes("profit") || text.includes("grow") ||
+                    text.includes("beat") || text.includes("success") || text.includes("innovative")) {
+                    positiveSignals++;
+                }
+                
+                // Negative keywords
+                if (text.includes("drop") || text.includes("fall") || text.includes("decline") || 
+                    text.includes("loss") || text.includes("fail") || text.includes("crash") ||
+                    text.includes("risk") || text.includes("lawsuit") || text.includes("concern")) {
+                    negativeSignals++;
+                }
+                
+                headlines += `${idx + 1}. ${article.title}\n`;
+            });
+            
+            analysis += headlines + "\n";
+            
+            if (negativeSignals > positiveSignals) {
+                analysis += `⚠️ **Market Sentiment:** Negative\n`;
+                analysis += `The recent headlines suggest negative sentiment with concerns or disappointing news affecting the stock price.\n`;
+            } else if (positiveSignals > negativeSignals) {
+                analysis += `✅ **Market Sentiment:** Positive\n`;
+                analysis += `Recent developments show positive momentum with growth or success stories supporting the stock.\n`;
+            } else {
+                analysis += `➡️ **Market Sentiment:** Mixed\n`;
+                analysis += `Recent news shows mixed signals with both positive and negative developments.\n`;
+            }
+        } else {
+            analysis += `\nNo specific news found, but price movements can be influenced by overall market conditions, earnings reports, or analyst ratings.\n`;
+        }
+        
+        return analysis;
+    } catch (error) {
+        console.error("Stock Analysis Error:", error);
+        return `Unable to fetch detailed analysis for ${company}. The service may be temporarily unavailable.`;
+    }
+}
+
 // ================= CONTEXT RESOLVER =================
 function resolveContext(text){
     if((text.includes("it") || text.includes("this") || text.includes("that")) && lastTopic){
@@ -364,6 +483,54 @@ function resolveContext(text){
 function getBotReply(input){
     try{
         let userInput = input.toLowerCase();
+
+        // CHECK FOR STOCK/PRICE ANALYSIS FIRST
+        const stockKeywords = ["stock", "price", "drop", "fall", "rise", "surge", "crash", "share", "market", "why"];
+        const companies = ["tesla", "apple", "google", "amazon", "microsoft", "facebook", "meta", "netflix", "nvidia", "intel", "amd", "tesla"];
+        const companySymbols = {
+            "tesla": "TSLA",
+            "apple": "AAPL",
+            "google": "GOOGL",
+            "amazon": "AMZN",
+            "microsoft": "MSFT",
+            "facebook": "FB",
+            "meta": "META",
+            "netflix": "NFLX",
+            "nvidia": "NVDA",
+            "intel": "INTC",
+            "amd": "AMD"
+        };
+        
+        // Check if question is asking about stock prices
+        const hasStockKeyword = stockKeywords.some(kw => userInput.includes(kw));
+        const mentionedCompany = Object.keys(companySymbols).find(company => userInput.includes(company));
+        
+        if (hasStockKeyword && mentionedCompany) {
+            // Return special marker for stock analysis
+            return { 
+                isStockAnalysis: true, 
+                company: mentionedCompany,
+                symbol: companySymbols[mentionedCompany]
+            };
+        }
+
+        // CHECK FOR NEWS REQUESTS
+        if (userInput.includes("news") || userInput.includes("latest")) {
+            let keyword = "business";
+            
+            if (userInput.includes("tech") || userInput.includes("technology")) {
+                keyword = "technology";
+            } else if (userInput.includes("sport") || userInput.includes("sports")) {
+                keyword = "sports";
+            } else if (userInput.includes("health")) {
+                keyword = "health";
+            } else if (userInput.includes("world") || userInput.includes("international")) {
+                keyword = "world";
+            }
+            
+            // Return a special marker so sendMessage knows to fetch news
+            return { isNews: true, keyword: keyword };
+        }
 
         // 1️⃣ FOLLOW-UP HANDLERS FIRST
         
@@ -586,7 +753,7 @@ function sendMessage() {
     const loadingId = "msg-" + Date.now();
     addMessage("Thinking...", 'bot', loadingId);
 
-    setTimeout(() => {
+    setTimeout(async () => {
         // --- MULTI-QUESTION LOGIC START ---
         // Split by "and", ".", or "?"
         const questions = input.toLowerCase().split(/and|[\.\?]/g).filter(q => q.trim().length > 2);
@@ -601,6 +768,16 @@ function sendMessage() {
             // Just a single question
             finalReply = getBotReply(input);
         }
+        
+        // Check if the response is a stock analysis request
+        if (typeof finalReply === 'object' && finalReply.isStockAnalysis) {
+            finalReply = await analyzeStockMovement(finalReply.company, finalReply.symbol);
+        }
+        // Check if the response is a news request
+        else if (typeof finalReply === 'object' && finalReply.isNews) {
+            finalReply = await fetchNews(finalReply.keyword);
+        }
+        
         // --- MULTI-QUESTION LOGIC END ---
 
         const msgDiv = document.getElementById(loadingId);
