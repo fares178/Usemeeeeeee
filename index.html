@@ -471,13 +471,6 @@ if(userInput.includes("purpose") && (userInput.includes("business") || lastTopic
     lastTopic = "business";
     return "The purpose of a business is to provide goods or services that satisfy customer needs while making profit. It also aims to grow, create value, and contribute to the economy.";
 }
-// ==== NEWSAPI HANDLER ====
-if (userInput.includes("news") || userInput.includes("latest business news")) {
-    lastTopic = "news";
-
-    return "Fetching the latest business news for you... 🗞️";
-}
-
 
 if(context.includes("business")){
     lastTopic = "business";
@@ -553,29 +546,6 @@ if(userInput.includes("what")){
         return "Something went wrong ⚠️";
     }
 }
-async function fetchBusinessNews() {
-    const apiKey = "5c4a83b8204d4c18a82b0d7b54d82981";
-    const url = `[newsapi.org](https://newsapi.org/v2/top-headlines?category=business&language=en&pageSize=3&apiKey=${apiKey})`;
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.articles && data.articles.length > 0) {
-            const newsList = data.articles.map(article => 
-                `📰 *${article.title}*\n${article.description || ""}\n[Read more](${article.url})`
-            ).join("\n\n---\n\n");
-
-            return newsList;
-        } else {
-            return "Sorry, I couldn’t find any recent business news right now.";
-        }
-    } catch (error) {
-        console.error("News API error:", error);
-        return "⚠️ There was an error fetching the news.";
-    }
-}
-
 // ================= UI =================
 function typeText(div,text,speed=20){
     if(!text) text = "Error";
@@ -629,23 +599,8 @@ function sendMessage() {
             finalReply = replies.join("\n\n---\n\n"); 
         } else {
             // Just a single question
-            (async () => {
-    finalReply = getBotReply(input);
-
-    // If the bot detects a news request
-    if (lastTopic === "news" || input.toLowerCase().includes("news")) {
-        finalReply = await fetchBusinessNews(); 
-    }
-
-    const msgDiv = document.getElementById(loadingId);
-    msgDiv.innerHTML = "";
-    typeText(msgDiv, finalReply, 20);
-
-    if (typeof speakResponse === "function") {
-        speakResponse(finalReply.replace(/-/g, ""));
-    }
-})();
-
+            finalReply = getBotReply(input);
+        }
         // --- MULTI-QUESTION LOGIC END ---
 
         const msgDiv = document.getElementById(loadingId);
