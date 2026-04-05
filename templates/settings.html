@@ -72,7 +72,7 @@ body.dark select {
 <body>
 <div class="container">
     <div class="nav-buttons">
-        <button onclick="openPage('index.html')">Home</button>
+        <button onclick="openPage('../index.html')">Home</button>
         <button onclick="openPage('about.html')">About</button>
         <button onclick="openPage('settings.html')">Settings</button>
     </div>
@@ -99,7 +99,10 @@ body.dark select {
 </div>
 
 <script>
-function openPage(page) { window.location.href = page; }
+function openPage(page) { 
+    console.log("Navigating to:", page);
+    window.location.href = page; 
+}
 
 function applyAppearance(value) {
     const isDark = value === 'dark';
