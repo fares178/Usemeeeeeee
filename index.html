@@ -3947,7 +3947,13 @@ function generatePptForTopic(topic) {
     metricsSlide.addText(details.metrics.map(item => ({ text: item })), { x: 0.5, y: 1.4, w: 9, h: 4, fontSize: 18, color: '333333', bullet: true });
 
     pptx.writeFile({ fileName: `${safeName}.pptx` });
+    addMessage('✅ It worked! Presentation file created and downloading now.', 'bot');
     console.log('✅ PowerPoint generated successfully:', safeName);
+  } catch (error) {
+    console.error('❌ Error generating PowerPoint:', error);
+    addMessage('❌ It didn\'t work. Error: ' + error.message, 'bot');
+  }
+}
   } catch (error) {
     console.error('❌ Error generating PowerPoint:', error);
     addMessage('❌ Sorry, there was an error generating the presentation. Please try again.', 'bot');
