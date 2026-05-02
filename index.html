@@ -364,6 +364,13 @@ body.dark .chat-input-area input {
     transform: translateY(-1px);
 }
 
+.input-hint {
+    font-size: 0.85em;
+    color: #555;
+    margin-top: 6px;
+}
+body.dark .input-hint { color: #bbb; }
+
 #voice-btn {
     border: none;
     background-color: #eee;
@@ -694,6 +701,7 @@ body.dark .data-table tbody tr:hover {
             <button id="voice-btn" onclick="startVoice()" title="Voice input">🎤</button>
             <button class="send-btn" onclick="sendMessage()">Send</button>
         </div>
+        <div class="input-hint">Tip: Ask me to create a presentation by saying “create a presentation about marketing strategy” or “generate slides on business growth”.</div>
     </div>
 </div>
 
@@ -723,6 +731,7 @@ body.dark .data-table tbody tr:hover {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.11.0/pptxgen.min.js"></script>
 
 <script>
 // ==================== DARK MODE ====================
@@ -3641,6 +3650,313 @@ function predictProfitLoss(text) {
   return null;
 }
 
+function extractPptTopic(text) {
+  const patterns = [
+    /\b(?:ppt|presentation|slides|slide deck)\b(?:\s*(?:about|on|for|about the topic of)\s*)(.+)$/i,
+    /\b(?:create|generate|make|build|prepare|compose|draft)\b.*\b(?:ppt|presentation|slides|slide deck)\b.*\b(?:about|on|for)\s*(.+)$/i,
+    /\b(?:presentation|slides|ppt|slide deck)\b.*\b(?:about|on|for|on the topic of)\b\s*(.+)$/i,
+    /\b(?:create|generate|make|build|prepare|compose|draft)\b.*\b(?:presentation|slides|slide deck)\b\b.*$/i
+  ];
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match && match[1]) {
+      return match[1].trim().replace(/[?!.]*$/, '');
+    }
+  }
+  return null;
+}
+
+function getTopicDetails(topic) {
+  const lower = topic.toLowerCase();
+  const defaultDetails = {
+    overview: `This deck covers the main ideas, benefits, challenges, and action steps for ${topic}.`,
+    why: [
+      `Why ${topic} matters today`,
+      `Key benefits and expected outcomes`,
+      `Typical business or customer impact`,
+      `Main risks and how to mitigate them`
+    ],
+    bullets: [
+      `Definition and core concept of ${topic}`,
+      `Primary benefits and use cases`,
+      `Common challenges and how to address them`,
+      `Real-world examples or scenarios`
+    ],
+    implementation: [
+      'Define clear goals and success criteria',
+      'Assign resources and establish roles',
+      'Create a phased execution plan',
+      'Monitor progress and adjust based on results'
+    ],
+    metrics: [
+      'How progress will be measured',
+      'Top performance indicators to track',
+      'Timeline for the first review',
+      'Next steps for continuous improvement'
+    ]
+  };
+
+  const topics = [
+    {
+      regex: /business plan|business planning|plan/, overview: `A strong business plan shows how ${topic} will create value, reach customers, and stay financially sustainable.`, why: [
+        'Clarifies the market opportunity',
+        'Defines the product or service offer',
+        'Sets financial and growth targets',
+        'Helps secure funding or stakeholder support'
+      ], bullets: [
+        'Executive summary and mission',
+        'Market research and target customers',
+        'Business model and revenue streams',
+        'Operations and financial projections'
+      ], implementation: [
+        'Gather market and customer insights',
+        'Draft the mission, vision, and strategy',
+        'Build financial forecasts and budgets',
+        'Review with advisors and refine'
+      ], metrics: [
+        'Projected revenue and profit milestones',
+        'Customer acquisition cost',
+        'Break-even timeline',
+        'Cash runway and funding needs'
+      ]
+    },
+    {
+      regex: /marketing strategy|marketing|digital marketing|social media|seo/, overview: `This presentation explains how ${topic} will help attract customers, build awareness, and grow sales.`, why: [
+        'Improves brand visibility',
+        'Targets the right audience',
+        'Supports lead generation and conversion',
+        'Builds long-term customer loyalty'
+      ], bullets: [
+        'Target audience and positioning',
+        'Priority marketing channels',
+        'Content and campaign concepts',
+        'Measurement and optimization plan'
+      ], implementation: [
+        'Set marketing goals and budget',
+        'Choose the top-performing channels',
+        'Create a content or campaign calendar',
+        'Review KPIs and refine campaigns'
+      ], metrics: [
+        'Lead volume and conversion rate',
+        'Cost per acquisition',
+        'Engagement and reach',
+        'Return on marketing investment'
+      ]
+    },
+    {
+      regex: /funding|raise capital|investor|pitch/, overview: `This deck outlines the funding story for ${topic}, including the need, use of capital, and investor benefits.`, why: [
+        'Explains why funding is needed',
+        'Shows how funds will be used',
+        'Demonstrates potential returns',
+        'Builds investor confidence'
+      ], bullets: [
+        'Funding requirements and timing',
+        'Business model and revenue path',
+        'Competitive advantage and market size',
+        'Use of proceeds and growth plan'
+      ], implementation: [
+        'Prepare financial projections and pitch deck',
+        'Identify target investors or partners',
+        'Practice the investor presentation',
+        'Follow up with clear milestones'
+      ], metrics: [
+        'Funding amount sought',
+        'Projected runway',
+        'Revenue milestones',
+        'Investor engagement and follow-up rate'
+      ]
+    },
+    {
+      regex: /product launch|launch|go to market/, overview: `This presentation covers how to launch ${topic} successfully with a clear market entry plan and timing.`, why: [
+        'Defines the target launch audience',
+        'Aligns product readiness with promotion',
+        'Reduces launch risk',
+        'Increases early adoption potential'
+      ], bullets: [
+        'Launch timeline and milestones',
+        'Product positioning and benefits',
+        'Launch marketing and sales channels',
+        'Customer onboarding and feedback loop'
+      ], implementation: [
+        'Complete launch readiness checklist',
+        'Coordinate teams across product, marketing, and sales',
+        'Prepare launch assets and communication',
+        'Track performance during the first weeks'
+      ], metrics: [
+        'Initial customer signups or sales',
+        'Adoption and engagement',
+        'Launch campaign reach',
+        'Feedback and iteration speed'
+      ]
+    },
+    {
+      regex: /financial forecast|forecast|revenue|cash flow|profit/, overview: `This deck explains the financial outlook for ${topic}, helping stakeholders understand revenue and expense expectations.`, why: [
+        'Improves budgeting accuracy',
+        'Supports decision-making',
+        'Highlights cash flow needs',
+        'Aligns growth plans with finances'
+      ], bullets: [
+        'Revenue projections and assumptions',
+        'Expense categories and drivers',
+        'Profitability and break-even',
+        'Cash flow outlook and risks'
+      ], implementation: [
+        'Build a revenue model',
+        'Estimate costs and variable expenses',
+        'Validate assumptions with market data',
+        'Update forecast as conditions change'
+      ], metrics: [
+        'Monthly revenue growth',
+        'Gross margin',
+        'Operating cash flow',
+        'Break-even date'
+      ]
+    },
+    {
+      regex: /customer service|service quality|support/, overview: `This presentation covers how ${topic} improves customer satisfaction and loyalty.`, why: [
+        'Boosts customer retention',
+        'Reduces churn',
+        'Strengthens brand reputation',
+        'Improves operational efficiency'
+      ], bullets: [
+        'Customer support channels',
+        'Service standards and training',
+        'Feedback collection process',
+        'Continuous improvement actions'
+      ], implementation: [
+        'Define service goals and KPIs',
+        'Equip staff with training and tools',
+        'Monitor customer feedback',
+        'Refine processes regularly'
+      ], metrics: [
+        'Customer satisfaction score',
+        'Response time',
+        'Issue resolution rate',
+        'Churn and retention trends'
+      ]
+    },
+    {
+      regex: /remote work|remote team|distributed team/, overview: `This deck explains how ${topic} supports productivity, flexibility, and team collaboration.`, why: [
+        'Enables flexibility and talent access',
+        'Reduces office costs',
+        'Requires strong communication practices',
+        'Needs clear remote culture and tools'
+      ], bullets: [
+        'Remote collaboration tools',
+        'Roles and responsibilities',
+        'Performance expectations',
+        'Culture and engagement strategies'
+      ], implementation: [
+        'Set remote work policies',
+        'Choose communication platforms',
+        'Build regular team rituals',
+        'Measure output and wellbeing'
+      ], metrics: [
+        'Team productivity',
+        'Employee satisfaction',
+        'Turnover rate',
+        'Project delivery on time'
+      ]
+    },
+    {
+      regex: /ecommerce|online store|online selling/, overview: `This presentation explains how ${topic} can reach customers online and grow digital sales.`, why: [
+        'Captures online shoppers',
+        'Supports scalable sales',
+        'Requires good customer experience',
+        'Depends on strong logistics and payments'
+      ], bullets: [
+        'Platform and storefront strategy',
+        'Product catalog and pricing',
+        'Customer journey and checkout experience',
+        'Fulfillment and shipping plan'
+      ], implementation: [
+        'Choose the right ecommerce platform',
+        'Optimize product listings',
+        'Set up payment and shipping',
+        'Track conversion and abandonment'
+      ], metrics: [
+        'Conversion rate',
+        'Average order value',
+        'Cart abandonment',
+        'Fulfillment efficiency'
+      ]
+    },
+    {
+      regex: /sustainability|green|esg|environmental/, overview: `This deck shows how ${topic} creates positive environmental and social impact while supporting business goals.`, why: [
+        'Improves brand trust',
+        'Reduces waste and costs',
+        'Meets customer expectations',
+        'Supports long-term resilience'
+      ], bullets: [
+        'Sustainability goals and vision',
+        'Operational changes and initiatives',
+        'Stakeholder benefits',
+        'Metrics for progress'
+      ], implementation: [
+        'Set measurable sustainability targets',
+        'Identify priority actions',
+        'Track progress and report regularly',
+        'Engage employees and partners'
+      ], metrics: [
+        'Energy / resource savings',
+        'Waste reduction',
+        'Customer perception',
+        'Sustainability milestones'
+      ]
+    }
+  ];
+
+  for (const topicDef of topics) {
+    if (topicDef.regex.test(lower)) {
+      return topicDef;
+    }
+  }
+
+  return defaultDetails;
+}
+
+function generatePptForTopic(topic) {
+  if (!topic) return;
+
+  const safeName = topic.replace(/[^a-z0-9\- ]/gi, '').replace(/\s+/g, '_').slice(0, 50) || 'presentation';
+  const pptx = new PptxGenJS();
+  const details = getTopicDetails(topic);
+
+  const titleSlide = pptx.addSlide();
+  titleSlide.addText(topic, { x: 0.5, y: 1.4, w: 9, h: 1.2, fontSize: 42, bold: true, color: '363636' });
+  titleSlide.addText('Generated by Usemee', { x: 0.5, y: 3.0, w: 9, h: 0.6, fontSize: 18, color: '606060' });
+
+  const overviewSlide = pptx.addSlide();
+  overviewSlide.addText('Overview', { x: 0.5, y: 0.4, w: 9, h: 0.8, fontSize: 32, bold: true, color: '2e4057' });
+  overviewSlide.addText(details.overview, { x: 0.5, y: 1.4, w: 9, h: 2.5, fontSize: 18, color: '333333', align: 'left' });
+
+  const whySlide = pptx.addSlide();
+  whySlide.addText('Why It Matters', { x: 0.5, y: 0.4, w: 9, h: 0.8, fontSize: 32, bold: true, color: '2e4057' });
+  whySlide.addText(details.why.map(item => ({ text: item, options: { bullet: true, fontSize: 18, color: '333333' } })), { x: 0.5, y: 1.4, w: 9, h: 4 });
+
+  const keyPointsSlide = pptx.addSlide();
+  keyPointsSlide.addText('Key Points', { x: 0.5, y: 0.4, w: 9, h: 0.8, fontSize: 32, bold: true, color: '2e4057' });
+  keyPointsSlide.addText(details.bullets.map(item => ({ text: item, options: { bullet: true, fontSize: 18, color: '333333' } })), { x: 0.5, y: 1.4, w: 9, h: 4 });
+
+  const actionSlide = pptx.addSlide();
+  actionSlide.addText('Implementation Plan', { x: 0.5, y: 0.4, w: 9, h: 0.8, fontSize: 32, bold: true, color: '2e4057' });
+  actionSlide.addText(details.implementation.map(item => ({ text: item, options: { bullet: true, fontSize: 18, color: '333333' } })), { x: 0.5, y: 1.4, w: 9, h: 4 });
+
+  const metricsSlide = pptx.addSlide();
+  metricsSlide.addText('Metrics & Next Steps', { x: 0.5, y: 0.4, w: 9, h: 0.8, fontSize: 32, bold: true, color: '2e4057' });
+  metricsSlide.addText(details.metrics.map(item => ({ text: item, options: { bullet: true, fontSize: 18, color: '333333' } })), { x: 0.5, y: 1.4, w: 9, h: 4 });
+
+  pptx.writeFile({ fileName: `${safeName}.pptx` });
+}
+
+function getPptRequestTopic(input) {
+  const topic = extractPptTopic(input);
+  if (!topic && /\b(?:ppt|presentation|slides|slide deck)\b/i.test(input)) {
+    return 'needTopic';
+  }
+  return topic;
+}
+
 
 
 function getBotReply(input) {
@@ -3742,8 +4058,20 @@ addMessage(input, 'user');
 $("#user-input").val("");
 
 setTimeout(() => {
-const reply = getBotReply(input);
-addMessage(reply, 'bot');
+  const pptTopic = getPptRequestTopic(input);
+  if (pptTopic === 'needTopic') {
+    addMessage('Please tell me the topic for the presentation, for example: "Create a presentation about marketing strategy".', 'bot');
+    return;
+  }
+
+  if (pptTopic) {
+    generatePptForTopic(pptTopic);
+    addMessage(`✅ Generating your presentation about "${pptTopic}". Download should start shortly.`, 'bot');
+    return;
+  }
+
+  const reply = getBotReply(input);
+  addMessage(reply, 'bot');
 }, 500);
 }
 
