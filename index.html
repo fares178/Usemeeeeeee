@@ -3954,11 +3954,6 @@ function generatePptForTopic(topic) {
     addMessage('❌ It didn\'t work. Error: ' + error.message, 'bot');
   }
 }
-  } catch (error) {
-    console.error('❌ Error generating PowerPoint:', error);
-    addMessage('❌ Sorry, there was an error generating the presentation. Please try again.', 'bot');
-  }
-}
 
 function getPptRequestTopic(input) {
   const topic = extractPptTopic(input);
