@@ -735,7 +735,7 @@ body.dark .data-table tbody tr:hover {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.11.0/pptxgen.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.min.js"></script>
 
 <script>
 // ==================== DARK MODE ====================
@@ -2143,6 +2143,446 @@ const intents = [
     {tag:"term_bear_market",patterns:["bear market","what is bear market"],responses:["Bear Market: Market with falling prices and investor pessimism. Risk for buyers. 📉"]},
 // BUSINESS COMPARISON
 {tag:"business_comparison",patterns:["compare businesses","compare companies","compare two companies","which company is better","business comparison","compare business performance"],responses:["Let me show you a detailed comparison of these businesses with real data and analysis..."]},
+
+// ADDITIONAL INTENTS FOR BETTER ANSWERS
+{tag:"startup_funding",patterns:["how to get funding for startup","startup funding options","raise money for business"],responses:["Funding options include bootstrapping, angel investors, VCs, crowdfunding, loans, and grants. Choose based on your stage and growth goals. 💰"]},
+
+{tag:"business_plan_template",patterns:["business plan template","how to write business plan","business plan structure"],responses:["A business plan includes: executive summary, company description, market analysis, organization, products/services, marketing/sales, funding request, financial projections, and appendix. 📋"]},
+
+{tag:"market_research",patterns:["how to do market research","market research steps","understand market"],responses:["Market research: identify target customers, analyze competitors, survey demand, study trends, and validate assumptions. 📊"]},
+
+{tag:"customer_persona",patterns:["what is customer persona","create buyer persona","customer profile"],responses:["Customer persona is a detailed profile of your ideal customer including demographics, behaviors, pain points, and motivations. 🎯"]},
+
+{tag:"minimum_viable_product",patterns:["what is mvp","minimum viable product","build mvp"],responses:["MVP is the simplest version of your product that solves the core problem for early customers. Test and iterate! 🚀"]},
+
+{tag:"pivot_business",patterns:["when to pivot","business pivot strategy","change business direction"],responses:["Pivot when your current model isn't working. Test new ideas, validate with customers, and be ready to change direction. 🔄"]},
+
+{tag:"business_mentor",patterns:["find business mentor","get business advice","business coaching"],responses:["Find mentors through networking events, LinkedIn, industry associations, or startup incubators. Great mentors accelerate growth! 👨‍🏫"]},
+
+{tag:"intellectual_property_business",patterns:["protect business ideas","ip protection for startups","patent business idea"],responses:["Protect IP through patents, trademarks, copyrights, and trade secrets. Consult a lawyer for your specific needs. 🔒"]},
+
+{tag:"remote_team",patterns:["manage remote team","remote work challenges","distributed team management"],responses:["Remote team success: clear communication, regular check-ins, collaboration tools, trust, and defined processes. 🏠"]},
+
+{tag:"business_insurance",patterns:["what insurance do i need","business insurance types","protect business"],responses:["Common insurance: liability, property, workers' comp, cyber, and business interruption. Depends on your industry and risks. 🛡️"]},
+
+{tag:"tax_optimization",patterns:["reduce business taxes","tax planning","business tax strategies"],responses:["Legal tax reduction: maximize deductions, choose right structure, invest in qualified opportunities, and work with tax professionals. 💼"]},
+
+{tag:"supply_chain_disruption",patterns:["supply chain problems","handle supply chain issues","supply chain risk"],responses:["Mitigate disruptions: diversify suppliers, build inventory buffers, monitor news, and have contingency plans. 📦"]},
+
+{tag:"customer_feedback_loop",patterns:["collect customer feedback","improve based on feedback","customer insights"],responses:["Create feedback loop: surveys, reviews, support tickets, user testing. Use insights to continuously improve! 🔄"]},
+
+{tag:"business_exit_strategy",patterns:["exit strategy options","sell business","business succession"],responses:["Exit options: sell to competitor, IPO, employee buyout, or family succession. Plan early for maximum value. 🚪"]},
+
+{tag:"crisis_communication",patterns:["handle business crisis","crisis pr","damage control"],responses:["Crisis response: acknowledge issue, take responsibility, communicate transparently, and show action plan. Speed matters! ⚠️"]},
+
+{tag:"sustainable_business",patterns:["sustainable business practices","eco-friendly business","green business"],responses:["Sustainable practices: reduce waste, use renewable energy, ethical sourcing, and transparent reporting. Good for reputation and costs! 🌱"]},
+
+{tag:"business_analytics",patterns:["business analytics","data driven decisions","analytics tools"],responses:["Use analytics to track KPIs, understand customers, optimize operations, and predict trends. Tools like Google Analytics, Mixpanel. 📊"]},
+
+{tag:"franchising_business",patterns:["start franchise","franchise opportunities","buy franchise"],responses:["Franchising: proven business model with brand recognition. Research costs, fees, and support before investing. 🏪"]},
+
+{tag:"business_ethics",patterns:["business ethics importance","ethical business decisions","corporate ethics"],responses:["Ethical business builds trust, attracts customers/employees, and ensures long-term success. Integrity over short-term gains! ✨"]},
+
+{tag:"work_life_balance",patterns:["work life balance","avoid burnout","business owner balance"],responses:["Maintain balance: set boundaries, delegate, take breaks, and prioritize health. Sustainable entrepreneurship! ⚖️"]},
+
+{tag:"business_networking",patterns:["business networking tips","build professional network","networking events"],responses:["Networking: attend events, join groups, follow up, provide value first. Relationships drive opportunities! 🤝"]},
+
+{tag:"product_pricing",patterns:["price product correctly","pricing models","value based pricing"],responses:["Pricing strategies: cost-plus, value-based, competitive, dynamic. Test different prices and measure impact. 💰"]},
+
+{tag:"customer_loyalty_program",patterns:["loyalty program ideas","reward customers","customer retention programs"],responses:["Loyalty programs: points, tiers, referrals, exclusive access. Increase retention and lifetime value! 🎁"]},
+
+{tag:"business_trends_2026",patterns:["business trends 2026","future business trends","upcoming trends"],responses:["2026 trends: AI automation, remote work normalization, sustainability focus, personalized experiences, and digital transformation. 📈"]},
+
+{tag:"startup_failure",patterns:["why startups fail","startup mistakes","avoid startup failure"],responses:["Common failures: no market need, poor team, cash problems, wrong pricing, competition. Learn from others! 📚"]},
+
+{tag:"business_credit",patterns:["build business credit","business credit score","credit for business"],responses:["Build credit: get EIN, open business accounts, pay on time, monitor score. Separate business and personal credit. 💳"]},
+
+{tag:"outsourcing_business",patterns:["when to outsource","outsourcing benefits","business outsourcing"],responses:["Outsource non-core tasks to focus on strengths. Benefits: cost savings, expertise access, scalability. 📤"]},
+
+{tag:"business_legal_structure",patterns:["choose business structure","llc vs corporation","business entity types"],responses:["Choose structure based on liability protection, taxes, and complexity. LLC good for most small businesses. 🏢"]},
+
+{tag:"cash_flow_management",patterns:["improve cash flow","cash flow tips","manage cash"],responses:["Cash flow tips: invoice promptly, offer discounts for early payment, reduce expenses, build emergency fund. 💵"]},
+
+{tag:"business_location",patterns:["choose business location","home office vs office","location strategy"],responses:["Location factors: customer access, costs, regulations, talent availability. Remote options increasingly viable! 📍"]},
+
+{tag:"vendor_negotiations",patterns:["negotiate with suppliers","vendor contracts","supplier agreements"],responses:["Negotiate: research alternatives, understand costs, ask for volume discounts, build relationships. Win-win! 🤝"]},
+
+{tag:"business_software",patterns:["essential business software","business tools","productivity software"],responses:["Essential tools: accounting (QuickBooks), CRM (HubSpot), project management (Asana), communication (Slack). Choose scalable! 💻"]},
+
+{tag:"employee_onboarding",patterns:["employee onboarding process","new hire training","onboard employees"],responses:["Effective onboarding: welcome, training, clear expectations, mentorship. Reduces turnover and improves productivity! 🎓"]},
+
+{tag:"business_competition",patterns:["analyze competitors","competitive analysis","beat competition"],responses:["Analyze competitors: products, pricing, marketing, strengths/weaknesses. Differentiate to win! 🔍"]},
+
+{tag:"business_budgeting",patterns:["create business budget","budgeting tips","financial planning"],responses:["Budget: forecast revenue/expenses, track actuals, adjust regularly. Use tools like spreadsheets or accounting software. 📊"]},
+
+{tag:"customer_support",patterns:["improve customer support","support strategies","customer service excellence"],responses:["Great support: fast response, empathy, solutions, follow-up. Turns complaints into loyalty! 📞"]},
+
+{tag:"business_scaling",patterns:["scale business operations","growth challenges","scaling tips"],responses:["Scaling: automate processes, hire strategically, maintain quality, manage cash flow. Don't scale problems! 🚀"]},
+
+{tag:"business_risks",patterns:["identify business risks","risk management","business threats"],responses:["Common risks: market changes, competition, regulations, operations, financial. Mitigate with planning and insurance. ⚠️"]},
+
+{tag:"business_opportunities",patterns:["find business opportunities","opportunity identification","market gaps"],responses:["Find opportunities: solve problems, follow trends, listen to customers, analyze data. Innovation creates opportunities! 💡"]},
+
+{tag:"business_goals",patterns:["set business goals","smart goals","goal setting"],responses:["SMART goals: Specific, Measurable, Achievable, Relevant, Time-bound. Track progress regularly! 🎯"]},
+
+{tag:"business_motivation",patterns:["stay motivated","entrepreneur motivation","overcome challenges"],responses:["Stay motivated: celebrate wins, learn from failures, surround with positive people, remember your why. 💪"]},
+
+{tag:"business_education",patterns:["learn business skills","business courses","improve business knowledge"],responses:["Learn through: books, online courses (Coursera), podcasts, networking, and hands-on experience. 📚"]},
+
+{tag:"business_technology",patterns:["adopt new technology","tech for business","digital tools"],responses:["Adopt tech that solves problems: automation, AI, cloud services, mobile apps. Stay current but don't overcomplicate! 🤖"]},
+
+{tag:"business_collaboration",patterns:["collaborate with others","business partnerships","strategic alliances"],responses:["Collaborate for: shared resources, expanded reach, complementary skills, and mutual growth. 1+1=3! 🤝"]},
+
+{tag:"business_innovation",patterns:["foster innovation","creative business ideas","innovation culture"],responses:["Innovation: encourage ideas, test small, learn fast, reward creativity. Drives competitive advantage! 💡"]},
+
+{tag:"business_resilience",patterns:["build resilient business","handle uncertainty","crisis preparedness"],responses:["Build resilience: diversify revenue, maintain cash reserves, adapt quickly, learn from disruptions. 🛡️"]},
+
+{tag:"business_impact",patterns:["measure business impact","social impact business","purpose driven business"],responses:["Measure impact: customer satisfaction, employee happiness, community contribution, environmental footprint. 🌍"]},
+
+{tag:"business_automation",patterns:["automate business processes","workflow automation","efficiency tools"],responses:["Automate repetitive tasks: email marketing, invoicing, social media, customer support. Free time for growth! ⚙️"]},
+
+{tag:"business_data_security",patterns:["protect business data","cybersecurity for small business","data privacy"],responses:["Data security: use strong passwords, encryption, backups, employee training, and security software. Protect your assets! 🔐"]},
+
+{tag:"business_branding",patterns:["develop brand identity","brand strategy","strong brand"],responses:["Strong brand: consistent messaging, visual identity, customer experience, and emotional connection. Builds loyalty! 🎨"]},
+
+{tag:"business_marketing_mix",patterns:["marketing mix","4ps of marketing","marketing strategy"],responses:["4Ps: Product, Price, Place, Promotion. Balance all for effective marketing strategy! 📢"]},
+
+{tag:"business_sales_process",patterns:["sales process steps","improve sales","sales funnel"],responses:["Sales process: prospect, connect, qualify, present, handle objections, close, follow-up. Refine continuously! 📈"]},
+
+{tag:"business_time_management",patterns:["manage time effectively","productivity hacks","business owner time"],responses:["Time management: prioritize tasks, batch similar work, eliminate distractions, delegate, and use tools. ⏰"]},
+
+{tag:"business_delegation",patterns:["delegate effectively","when to delegate","trust team"],responses:["Delegate: tasks outside your strengths, repetitive work, when overloaded. Train and trust your team! 🎯"]},
+
+{tag:"business_continuity",patterns:["business continuity plan","disaster recovery","emergency planning"],responses:["Continuity plan: identify risks, backup systems, emergency procedures, communication plan. Prepare for worst-case! 📋"]},
+
+{tag:"business_sustainability",patterns:["sustainable growth","long term business success","sustainable practices"],responses:["Sustainable growth: balance profit with people/planet, ethical practices, long-term thinking. Future-proof your business! 🌱"]},
+
+{tag:"business_creativity",patterns:["boost creativity","creative thinking","innovation techniques"],responses:["Boost creativity: brainstorm freely, try new approaches, learn from other industries, take breaks. Fresh ideas drive success! 🎨"]},
+
+{tag:"business_adaptability",patterns:["adapt to change","business flexibility","handle market changes"],responses:["Adaptability: monitor trends, stay informed, be willing to pivot, embrace change. Survival skill in business! 🔄"]},
+
+{tag:"business_leadership",patterns:["develop leadership skills","leadership qualities","lead team"],responses:["Leadership: vision, communication, empathy, decision-making, inspiration. Develop through practice and feedback! 👑"]},
+
+{tag:"business_communication",patterns:["improve communication","business communication skills","clear messaging"],responses:["Communication: be clear, listen actively, choose right medium, follow up. Prevents misunderstandings! 💬"]},
+
+{tag:"business_conflict_resolution",patterns:["resolve conflicts","handle disagreements","team conflicts"],responses:["Conflict resolution: stay calm, understand perspectives, find common ground, focus on solutions. Healthy for team! 🤝"]},
+
+{tag:"business_decision_making",patterns:["make better decisions","decision making process","strategic thinking"],responses:["Decision making: gather info, consider options, weigh pros/cons, get input, decide confidently. Use data when possible! 🧠"]},
+
+{tag:"business_problem_solving",patterns:["solve business problems","problem solving techniques","troubleshooting"],responses:["Problem solving: define problem, gather facts, generate solutions, evaluate options, implement best solution. Systematic approach! 🔧"]},
+
+{tag:"business_prioritization",patterns:["prioritize tasks","eisenhower matrix","important vs urgent"],responses:["Prioritization: focus on high-impact tasks, use frameworks like Eisenhower matrix, avoid busywork. Work smarter! 📋"]},
+
+{tag:"business_productivity",patterns:["increase productivity","productivity tips","work efficiently"],responses:["Productivity: eliminate distractions, batch tasks, take breaks, use tools, maintain energy. Consistent habits matter! ⚡"]},
+
+{tag:"business_work_life_integration",patterns:["integrate work and life","entrepreneur lifestyle","balance priorities"],responses:["Work-life integration: set boundaries, align personal/professional goals, make time for what matters. Sustainable success! ⚖️"]},
+
+{tag:"business_mentorship",patterns:["find mentor","be mentor","mentorship benefits"],responses:["Mentorship: accelerates learning, provides guidance, expands network. Both mentoring and being mentored valuable! 👨‍🏫"]},
+
+{tag:"business_learning",patterns:["continuous learning","stay updated","business education"],responses:["Continuous learning: read industry news, take courses, attend conferences, learn from failures. Never stop growing! 📚"]},
+
+{tag:"business_networking_online",patterns:["online networking","digital networking","virtual connections"],responses:["Online networking: LinkedIn, industry forums, virtual events, social media. Build relationships remotely! 🌐"]},
+
+{tag:"business_personal_development",patterns:["personal growth","develop skills","self improvement"],responses:["Personal development: identify strengths/weaknesses, set goals, seek feedback, invest in learning. Grow yourself, grow business! 🌟"]},
+
+{tag:"business_emotional_intelligence",patterns:["emotional intelligence","eq in business","people skills"],responses:["EQ: self-awareness, empathy, social skills. Critical for leadership, customer relations, and team management! ❤️"]},
+
+{tag:"business_critical_thinking",patterns:["critical thinking","analytical skills","logical reasoning"],responses:["Critical thinking: question assumptions, analyze information, consider alternatives, make reasoned judgments. Essential for decisions! 🧠"]},
+
+{tag:"business_financial_literacy",patterns:["financial literacy","understand money","financial knowledge"],responses:["Financial literacy: read statements, understand ratios, track cash flow, plan budgets. Money knowledge = business control! 💰"]},
+
+{tag:"business_risk_taking",patterns:["calculated risks","risk taking in business","embrace uncertainty"],responses:["Risk taking: assess risks, start small, learn from failures, balance with caution. Innovation requires some risk! 🎲"]},
+
+{tag:"business_patience",patterns:["business patience","long term thinking","delayed gratification"],responses:["Patience: business growth takes time, focus on progress not perfection, trust the process. Rome wasn't built in a day! 🕰️"]},
+
+{tag:"business_gratitude",patterns:["business gratitude","appreciate team","thank customers"],responses:["Gratitude: thank employees, customers, partners. Builds loyalty, morale, and positive culture. Small acts matter! 🙏"]},
+
+{tag:"business_humor",patterns:["business humor","lighten up","workplace fun"],responses:["Humor: reduces stress, builds relationships, makes work enjoyable. Don't take yourself too seriously! 😄"]},
+
+{tag:"business_persistence",patterns:["never give up","business persistence","resilience"],responses:["Persistence: most successes come after multiple failures. Keep learning, adapting, and moving forward! 💪"]},
+
+{tag:"business_curiosity",patterns:["stay curious","ask questions","business curiosity"],responses:["Curiosity: ask why, explore new ideas, challenge status quo. Drives innovation and continuous improvement! ❓"]},
+
+{tag:"business_generosity",patterns:["business generosity","give back","community involvement"],responses:["Generosity: share knowledge, help others, contribute to community. Builds reputation and creates goodwill! 🤲"]},
+
+{tag:"business_authenticity",patterns:["be authentic","genuine leadership","true to values"],responses:["Authenticity: be yourself, align actions with values, transparent communication. People connect with real people! ✨"]},
+
+{tag:"business_vulnerability",patterns:["embrace vulnerability","admit mistakes","leadership vulnerability"],responses:["Vulnerability: admit when wrong, ask for help, share challenges. Builds trust and stronger relationships! 💔"]},
+
+{tag:"business_optimism",patterns:["positive outlook","business optimism","glass half full"],responses:["Optimism: focus on possibilities, learn from setbacks, maintain hope. Positive mindset attracts success! ☀️"]},
+
+{tag:"business_humility",patterns:["business humility","stay humble","learn from others"],responses:["Humility: recognize limitations, learn from everyone, give credit to others. Opens doors to growth! 🙇"]},
+
+{tag:"business_integrity",patterns:["business integrity","honest business","ethical standards"],responses:["Integrity: do right thing, keep promises, transparent dealings. Foundation of long-term success! ⚖️"]},
+
+{tag:"business_compassion",patterns:["compassionate leadership","care for employees","customer compassion"],responses:["Compassion: understand struggles, show empathy, support others. Creates loyal team and customers! ❤️"]},
+
+{tag:"business_creativity",patterns:["creative solutions","think outside box","innovative thinking"],responses:["Creativity: find novel solutions, combine ideas, challenge assumptions. Differentiates your business! 🎨"]},
+
+{tag:"business_adaptability",patterns:["adapt quickly","business flexibility","change management"],responses:["Adaptability: embrace change, learn new skills, pivot when needed. Essential in fast-changing world! 🔄"]},
+
+{tag:"business_leadership",patterns:["leadership development","lead by example","inspirational leadership"],responses:["Leadership: inspire others, set vision, empower team, lead with purpose. Great leaders create great businesses! 👑"]},
+
+{tag:"business_communication",patterns:["effective communication","clear messaging","active listening"],responses:["Communication: speak clearly, listen actively, choose right words, confirm understanding. Prevents costly mistakes! 💬"]},
+
+{tag:"business_conflict_resolution",patterns:["resolve disputes","mediation skills","win-win solutions"],responses:["Conflict resolution: understand positions, find common ground, focus on interests not positions. Healthy teams thrive! 🤝"]},
+
+{tag:"business_decision_making",patterns:["strategic decisions","data driven decisions","decision frameworks"],responses:["Decision making: gather data, consider impacts, involve stakeholders, commit fully. Better decisions = better results! 🧠"]},
+
+{tag:"business_problem_solving",patterns:["systematic problem solving","root cause analysis","solution oriented"],responses:["Problem solving: identify root cause, brainstorm solutions, test approaches, implement best. Turn problems into opportunities! 🔧"]},
+
+{tag:"business_prioritization",patterns:["prioritize effectively","focus on what matters","time allocation"],responses:["Prioritization: identify high-impact activities, eliminate low-value tasks, focus energy where it counts. Work smarter! 📋"]},
+
+{tag:"business_productivity",patterns:["productivity systems","efficient workflows","output optimization"],responses:["Productivity: streamline processes, eliminate waste, leverage tools, maintain focus. More output with same input! ⚡"]},
+
+{tag:"business_work_life_integration",patterns:["work life harmony","personal professional balance","integrated lifestyle"],responses:["Work-life integration: align personal values with work, set flexible boundaries, nurture all life areas. Sustainable fulfillment! ⚖️"]},
+
+{tag:"business_mentorship",patterns:["mentorship relationships","knowledge transfer","career guidance"],responses:["Mentorship: share wisdom, accelerate growth, build networks. Both mentors and mentees benefit greatly! 👨‍🏫"]},
+
+{tag:"business_learning",patterns:["lifelong learning","skill development","knowledge acquisition"],responses:["Learning: stay current, embrace new ideas, invest in development. Knowledge is your greatest asset! 📚"]},
+
+{tag:"business_networking_online",patterns:["digital connections","online communities","virtual networking"],responses:["Online networking: engage meaningfully, provide value, build genuine relationships. Digital world = global opportunities! 🌐"]},
+
+{tag:"business_personal_development",patterns:["self awareness","growth mindset","personal evolution"],responses:["Personal development: know yourself, challenge beliefs, embrace feedback, commit to growth. Become better leader! 🌟"]},
+
+{tag:"business_emotional_intelligence",patterns:["eq skills","emotional awareness","relationship management"],responses:["Emotional intelligence: understand emotions, manage reactions, build rapport. Key to leadership and customer service! ❤️"]},
+
+{tag:"business_critical_thinking",patterns:["analytical thinking","logical analysis","evidence based reasoning"],responses:["Critical thinking: evaluate information, identify biases, draw sound conclusions. Essential for strategy and decisions! 🧠"]},
+
+{tag:"business_financial_literacy",patterns:["money management","financial acumen","budgeting skills"],responses:["Financial literacy: understand numbers, track performance, make informed choices. Money follows knowledge! 💰"]},
+
+{tag:"business_risk_taking",patterns:["intelligent risk taking","risk reward balance","calculated gambles"],responses:["Risk taking: assess probabilities, start small, have backup plans, learn from outcomes. Growth requires courage! 🎲"]},
+
+{tag:"business_patience",patterns:["strategic patience","long game thinking","sustained effort"],responses:["Patience: trust compounding, focus on fundamentals, avoid shortcuts. Lasting success takes time! 🕰️"]},
+
+{tag:"business_gratitude",patterns:["appreciation culture","thankful mindset","positive recognition"],responses:["Gratitude: acknowledge contributions, celebrate successes, express thanks. Creates positive, motivated environment! 🙏"]},
+
+{tag:"business_humor",patterns:["workplace humor","light hearted culture","fun at work"],responses:["Humor: diffuse tension, build connections, make work enjoyable. Laughter boosts creativity and morale! 😄"]},
+
+{tag:"business_persistence",patterns:["grit and determination","resilient mindset","never quit attitude"],responses:["Persistence: push through challenges, learn from setbacks, maintain momentum. Success favors the persistent! 💪"]},
+
+{tag:"business_curiosity",patterns:["intellectual curiosity","questioning mindset","exploratory approach"],responses:["Curiosity: ask deeper questions, explore possibilities, challenge norms. Curiosity drives innovation! ❓"]},
+
+{tag:"business_generosity",patterns:["giving mindset","value creation","community contribution"],responses:["Generosity: share resources, help others succeed, contribute to society. Generosity creates abundance! 🤲"]},
+
+{tag:"business_authenticity",patterns:["genuine leadership","authentic brand","true self"],responses:["Authenticity: be real, stay true to values, transparent communication. Authenticity builds trust and loyalty! ✨"]},
+
+{tag:"business_vulnerability",patterns:["vulnerable leadership","admitting weakness","emotional openness"],responses:["Vulnerability: show humanity, admit mistakes, ask for support. Vulnerability strengthens relationships! 💔"]},
+
+{tag:"business_optimism",patterns:["positive mindset","optimistic outlook","hopeful attitude"],responses:["Optimism: see opportunities in challenges, maintain hope, inspire others. Optimism attracts positive outcomes! ☀️"]},
+
+{tag:"business_humility",patterns:["humble leadership","learning attitude","open mindedness"],responses:["Humility: acknowledge ignorance, seek advice, learn from all. Humility accelerates growth! 🙇"]},
+
+{tag:"business_integrity",patterns:["ethical conduct","moral compass","honorable business"],responses:["Integrity: consistent values, honest dealings, ethical decisions. Integrity builds unbreakable trust! ⚖️"]},
+
+{tag:"business_compassion",patterns:["compassionate culture","empathic leadership","caring approach"],responses:["Compassion: understand pain points, show genuine care, support healing. Compassion creates loyalty! ❤️"]},
+
+{tag:"business_creativity",patterns:["creative problem solving","innovative solutions","out of box thinking"],responses:["Creativity: combine ideas uniquely, find novel approaches, embrace experimentation. Creativity drives differentiation! 🎨"]},
+
+{tag:"business_adaptability",patterns:["change agility","flexible mindset","rapid adaptation"],responses:["Adaptability: embrace uncertainty, learn quickly, pivot skillfully. Adaptability ensures survival! 🔄"]},
+
+{tag:"business_leadership",patterns:["transformational leadership","visionary guidance","empowering others"],responses:["Leadership: articulate vision, empower action, inspire excellence. Great leadership creates extraordinary results! 👑"]},
+
+{tag:"business_communication",patterns:["persuasive communication","influential messaging","impactful dialogue"],responses:["Communication: craft compelling messages, choose optimal channels, ensure understanding. Communication drives action! 💬"]},
+
+{tag:"business_conflict_resolution",patterns:["constructive conflict","healthy disagreement","collaborative solutions"],responses:["Conflict resolution: surface issues, understand perspectives, find mutually beneficial solutions. Conflict can strengthen teams! 🤝"]},
+
+{tag:"business_decision_making",patterns:["rational decision making","evidence based choices","strategic judgment"],responses:["Decision making: gather comprehensive data, consider multiple scenarios, choose optimal path. Good decisions compound! 🧠"]},
+
+{tag:"business_problem_solving",patterns:["innovative problem solving","systematic troubleshooting","effective solutions"],responses:["Problem solving: define clearly, analyze deeply, generate creative solutions, test and refine. Problems are opportunities! 🔧"]},
+
+{tag:"business_prioritization",patterns:["strategic prioritization","impact focused","value driven choices"],responses:["Prioritization: evaluate importance and urgency, focus on high-leverage activities, eliminate distractions. Prioritize ruthlessly! 📋"]},
+
+{tag:"business_productivity",patterns:["peak performance","optimal efficiency","maximum output"],responses:["Productivity: optimize systems, leverage technology, maintain energy, eliminate bottlenecks. Productivity creates freedom! ⚡"]},
+
+{tag:"business_work_life_integration",patterns:["holistic balance","integrated living","purpose alignment"],responses:["Work-life integration: align all life domains, eliminate artificial boundaries, pursue meaningful work. Integration creates fulfillment! ⚖️"]},
+
+{tag:"business_mentorship",patterns:["developmental relationships","knowledge sharing","mutual growth"],responses:["Mentorship: transfer wisdom, accelerate development, expand perspectives. Mentorship creates legacy! 👨‍🏫"]},
+
+{tag:"business_learning",patterns:["continuous improvement","skill mastery","knowledge expansion"],responses:["Learning: embrace curiosity, seek feedback, invest in development, apply new knowledge. Learning creates capability! 📚"]},
+
+{tag:"business_networking_online",patterns:["digital relationship building","online collaboration","virtual communities"],responses:["Online networking: engage authentically, provide value first, nurture connections. Digital networks = global leverage! 🌐"]},
+
+{tag:"business_personal_development",patterns:["self mastery","character development","leadership growth"],responses:["Personal development: cultivate strengths, address weaknesses, expand comfort zone, embody values. Personal growth = business growth! 🌟"]},
+
+{tag:"business_emotional_intelligence",patterns:["relationship intelligence","social awareness","emotional mastery"],responses:["Emotional intelligence: read social cues, manage emotions, build empathy, influence positively. EQ drives success! ❤️"]},
+
+{tag:"business_critical_thinking",patterns:["logical reasoning","analytical rigor","evidence based thinking"],responses:["Critical thinking: question assumptions, evaluate evidence, consider implications, draw reasoned conclusions. Think critically! 🧠"]},
+
+{tag:"business_financial_literacy",patterns:["numerical fluency","financial wisdom","economic understanding"],responses:["Financial literacy: understand cash flow, profit drivers, valuation metrics, investment principles. Financial wisdom = freedom! 💰"]},
+
+{tag:"business_risk_taking",patterns:["strategic risk taking","intelligent gambles","bold action"],responses:["Risk taking: calculate odds, mitigate downsides, start small, learn fast. Calculated risks create breakthroughs! 🎲"]},
+
+{tag:"business_patience",patterns:["disciplined patience","long term orientation","strategic waiting"],responses:["Patience: allow time for compounding, trust the process, avoid impulsive decisions. Patience builds empires! 🕰️"]},
+
+{tag:"business_gratitude",patterns:["appreciative mindset","recognition culture","positive acknowledgment"],responses:["Gratitude: express thanks, acknowledge efforts, celebrate achievements. Gratitude creates positive momentum! 🙏"]},
+
+{tag:"business_humor",patterns:["playful culture","light hearted approach","joyful workplace"],responses:["Humor: relieve stress, foster connection, spark creativity. Humor makes work more enjoyable and productive! 😄"]},
+
+{tag:"business_persistence",patterns:["relentless pursuit","unwavering commitment","resolute determination"],responses:["Persistence: endure setbacks, maintain focus, push through resistance. Persistence turns dreams into reality! 💪"]},
+
+{tag:"business_curiosity",patterns:["insatiable curiosity","exploratory mindset","discovery orientation"],responses:["Curiosity: ask provocative questions, explore unknown territories, challenge conventional wisdom. Curiosity fuels innovation! ❓"]},
+
+{tag:"business_generosity",patterns:["abundant mindset","value giving","contribution focus"],responses:["Generosity: give freely, share abundantly, contribute generously. Generosity creates wealth and goodwill! 🤲"]},
+
+{tag:"business_authenticity",patterns:["genuine expression","authentic presence","true self manifestation"],responses:["Authenticity: express true self, align actions with beliefs, transparent in dealings. Authenticity attracts authenticity! ✨"]},
+
+{tag:"business_vulnerability",patterns:["courageous vulnerability","emotional openness","authentic sharing"],responses:["Vulnerability: share struggles, admit limitations, seek genuine connection. Vulnerability builds deep trust! 💔"]},
+
+{tag:"business_optimism",patterns:["hopeful perspective","positive expectancy","uplifting outlook"],responses:["Optimism: envision positive futures, focus on possibilities, inspire hope in others. Optimism creates reality! ☀️"]},
+
+{tag:"business_humility",patterns:["grounded leadership","learning posture","teachable spirit"],responses:["Humility: recognize contributions of others, acknowledge own limitations, remain open to learning. Humility invites wisdom! 🙇"]},
+
+{tag:"business_integrity",patterns:["uncompromising ethics","moral consistency","principled action"],responses:["Integrity: act with honesty, keep commitments, uphold standards. Integrity builds unbreakable reputation! ⚖️"]},
+
+{tag:"business_compassion",patterns:["empathetic leadership","caring culture","human centered approach"],responses:["Compassion: understand human experience, respond with care, support healing and growth. Compassion creates loyalty! ❤️"]},
+
+// INDUSTRY-SPECIFIC ADVICE
+{tag:"tech_startup_advice",patterns:["tech startup","software startup","saas startup","app startup","tech company advice"],responses:[""]},
+
+{tag:"retail_business_advice",patterns:["retail business","store advice","shop advice","retail startup","brick and mortar"],responses:[""]},
+
+{tag:"ecommerce_advice",patterns:["ecommerce","online store","dropshipping","online business","digital commerce"],responses:[""]},
+
+{tag:"restaurant_advice",patterns:["restaurant","food business","cafe","bar","hospitality"],responses:[""]},
+
+{tag:"consulting_advice",patterns:["consulting","consultant","freelance consulting","consulting business"],responses:[""]},
+
+{tag:"healthcare_advice",patterns:["healthcare business","medical practice","clinic","health startup"],responses:[""]},
+
+{tag:"real_estate_advice",patterns:["real estate","property business","real estate agent","property management"],responses:[""]},
+
+{tag:"finance_business_advice",patterns:["financial services","fintech","banking","investment advice","wealth management"],responses:[""]},
+
+{tag:"education_advice",patterns:["education business","school","training company","edtech","online learning"],responses:[""]},
+
+{tag:"manufacturing_advice",patterns:["manufacturing","factory","production business","industrial"],responses:[""]},
+
+// BUSINESS PLANNING TOOLS
+{tag:"business_plan_wizard",patterns:["create business plan","business plan wizard","help me write business plan","business plan builder","make business plan"],responses:[""]},
+
+{tag:"swot_analysis_tool",patterns:["swot analysis","do swot","swot tool","strategic analysis","business analysis"],responses:[""]},
+
+{tag:"market_research_help",patterns:["market research","research market","understand market","market analysis"],responses:[""]},
+
+// CEO QUESTIONS
+{tag:"ceo_role",patterns:["what does ceo do","ceo responsibilities","ceo job description","ceo duties"],responses:["CEO responsibilities: set vision/strategy, lead executive team, make key decisions, represent company, drive growth, manage stakeholders. CEO = Chief Everything Officer! 👑"]},
+
+{tag:"ceo_qualities",patterns:["ceo qualities","good ceo traits","ceo characteristics","ceo skills"],responses:["Great CEO qualities: vision, leadership, decision-making, communication, resilience, adaptability, emotional intelligence, strategic thinking. Balance hard and soft skills! 💪"]},
+
+{tag:"ceo_challenges",patterns:["ceo challenges","ceo problems","difficulties of being ceo","ceo struggles"],responses:["CEO challenges: high pressure, loneliness at top, balancing stakeholders, constant change, personal sacrifices, making tough decisions, maintaining work-life balance. Not for the faint-hearted! ⚠️"]},
+
+{tag:"ceo_compensation",patterns:["ceo salary","ceo pay","ceo compensation","how much do ceos make"],responses:["CEO compensation varies widely: base salary ($200K-$2M), bonuses, stock options, perks. Top CEOs earn $10M+ total. Depends on company size and performance. 💰"]},
+
+{tag:"ceo_vs_cfo",patterns:["ceo vs cfo","difference between ceo and cfo","ceo cfo roles"],responses:["CEO focuses on vision/strategy/growth. CFO handles finances, budgeting, financial planning, investor relations. CEO = direction, CFO = money management. 🎯"]},
+
+{tag:"ceo_vs_coo",patterns:["ceo vs coo","ceo coo difference","chief operating officer"],responses:["CEO sets overall direction. COO manages daily operations, implements strategy, oversees departments. CEO = what to do, COO = how to do it. ⚙️"]},
+
+{tag:"ceo_succession",patterns:["ceo succession","ceo transition","choosing next ceo"],responses:["CEO succession planning: identify internal candidates, develop leadership pipeline, consider external hires, ensure smooth transition, maintain continuity. Plan ahead! 📋"]},
+
+{tag:"ceo_famous",patterns:["famous ceos","successful ceos","great ceos examples"],responses:["Famous CEOs: Elon Musk (Tesla/SpaceX), Jeff Bezos (Amazon), Satya Nadella (Microsoft), Sundar Pichai (Google), Tim Cook (Apple). Each transformed their industries! 🌟"]},
+
+{tag:"ceo_education",patterns:["ceo education","do ceos need degrees","ceo background"],responses:["CEO backgrounds vary: some Ivy League MBAs, others dropouts. What matters: experience, track record, leadership ability. Education helps but not required. 🎓"]},
+
+{tag:"ceo_age",patterns:["ceo age","youngest ceos","ceo age range"],responses:["CEO ages vary: youngest ~25 (Mark Zuckerberg at Facebook), average ~50s. No age limit for leadership. Experience and capability matter most! 👶➡️👴"]},
+
+{tag:"ceo_women",patterns:["female ceos","women ceos","women in leadership"],responses:["Notable women CEOs: Mary Barra (GM), Indra Nooyi (PepsiCo), Ginni Rometty (IBM), Satya Nadella (Microsoft), Sundar Pichai (Google). More women CEOs needed! 👩‍💼"]},
+
+{tag:"ceo_decisions",patterns:["ceo decision making","tough ceo decisions","ceo choices"],responses:["CEO decisions: mergers/acquisitions, layoffs, pivots, investments, crisis response. Must balance stakeholders, ethics, and long-term vision. Tough but necessary! 🤔"]},
+
+{tag:"ceo_communication",patterns:["ceo communication","ceo speaking","ceo presentation"],responses:["CEO communication: clear vision articulation, inspiring speeches, transparent updates, crisis messaging. CEOs are company spokespeople. Speak powerfully! 🎤"]},
+
+{tag:"ceo_networking",patterns:["ceo networking","ceo connections","ceo relationships"],responses:["CEO networking: board members, investors, industry leaders, politicians. Strong network = opportunities, partnerships, and influence. Build strategically! 🤝"]},
+
+{tag:"ceo_health",patterns:["ceo health","ceo stress","ceo burnout"],responses:["CEO health challenges: high stress, long hours, travel, pressure. Many suffer burnout. Self-care, delegation, and balance crucial for sustainability. 🏥"]},
+
+{tag:"ceo_failure",patterns:["ceo failures","fired ceos","ceo mistakes"],responses:["Famous CEO failures: Carly Fiorina (HP), Ron Johnson (JC Penney), Elizabeth Holmes (Theranos). Even great CEOs fail. Learn from mistakes! 📉"]},
+
+{tag:"ceo_innovation",patterns:["ceo innovation","ceo creativity","ceo disruption"],responses:["CEO innovation: foster creative culture, encourage risk-taking, invest in R&D, embrace disruption. CEOs drive company innovation and adaptation. 💡"]},
+
+{tag:"ceo_culture",patterns:["ceo culture","ceo company culture","ceo values"],responses:["CEO sets company culture: values, behaviors, norms. Culture affects hiring, retention, performance. CEOs are chief culture officers! 🏢"]},
+
+{tag:"ceo_board",patterns:["ceo board relationship","ceo board of directors","ceo governance"],responses:["CEO-board relationship: CEO executes strategy, board provides oversight/advice. Balance of power, trust, and communication essential. ⚖️"]},
+
+{tag:"ceo_investors",patterns:["ceo investor relations","ceo shareholders","ceo communication with investors"],responses:["CEO investor relations: earnings calls, roadshows, transparency, managing expectations. Build trust and communicate value creation. 📊"]},
+
+{tag:"ceo_crisis",patterns:["ceo crisis management","ceo handling crisis","ceo emergency response"],responses:["CEO crisis management: quick assessment, clear communication, decisive action, stakeholder management. Crises test true leadership! 🚨"]},
+
+{tag:"ceo_succession",patterns:["ceo succession planning","ceo replacement","next ceo"],responses:["CEO succession: internal development, external search, transition planning. Avoid leadership vacuum. Plan 1-2 years ahead! 📅"]},
+
+{tag:"ceo_compensation_structure",patterns:["ceo pay structure","ceo bonuses","ceo stock options"],responses:["CEO comp structure: base salary, performance bonuses, equity grants, perks. Aligns interests with shareholders. Complex and debated! 💼"]},
+
+{tag:"ceo_diversity",patterns:["ceo diversity","diverse ceos","ceo inclusion"],responses:["CEO diversity: gender, ethnicity, background variety. Diverse leadership improves decision-making, innovation, and market understanding. 🌍"]},
+
+{tag:"ceo_ethics",patterns:["ceo ethics","ethical ceo","ceo integrity"],responses:["CEO ethics: honest leadership, transparent governance, responsible decisions. Ethical lapses destroy reputation and careers. Stay principled! ⚖️"]},
+
+{tag:"ceo_mentorship",patterns:["ceo mentorship","ceo mentoring","ceo guidance"],responses:["CEO mentorship: guide executives, share wisdom, develop talent. Many CEOs mentor next generation leaders. Pay it forward! 👨‍🏫"]},
+
+{tag:"ceo_work_life",patterns:["ceo work life balance","ceo personal life","ceo family time"],responses:["CEO work-life balance: challenging but possible. Set boundaries, delegate, prioritize health/family. Sustainable leadership matters! ⚖️"]},
+
+{tag:"ceo_public_speaking",patterns:["ceo public speaking","ceo presentations","ceo speeches"],responses:["CEO public speaking: TED talks, conferences, media. Hone communication skills, tell compelling stories, inspire audiences. Practice relentlessly! 🎤"]},
+
+{tag:"ceo_reading",patterns:["ceo books","ceo reading habits","ceo learning"],responses:["CEOs read widely: business books, biographies, industry reports, fiction. Continuous learning keeps CEOs sharp and innovative. 📚"]},
+
+{tag:"ceo_hobbies",patterns:["ceo hobbies","ceo interests","ceo outside work"],responses:["CEO hobbies vary: sports, music, travel, philanthropy. Hobbies provide balance, creativity, and networking opportunities. 🎨"]},
+
+{tag:"ceo_philanthropy",patterns:["ceo philanthropy","ceo giving back","ceo charity"],responses:["CEO philanthropy: company foundations, personal giving, cause support. Many CEOs dedicate time/money to social causes. Give back! 🤲"]},
+
+{tag:"ceo_personal_brand",patterns:["ceo personal brand","ceo reputation","ceo image"],responses:["CEO personal brand: built through actions, communication, social media. Strong brand enhances company reputation and opportunities. ✨"]},
+
+{tag:"ceo_trends",patterns:["ceo trends","future ceos","ceo evolution"],responses:["CEO trends: digital transformation focus, stakeholder capitalism, diversity emphasis, remote leadership, sustainability priority. CEOs must evolve! 🔮"]},
+
+{tag:"ceo_coaching",patterns:["ceo coaching","ceo development","ceo improvement"],responses:["CEO coaching: executive coaches provide feedback, development, perspective. Even top CEOs benefit from coaching. Invest in growth! 🧑‍🏫"]},
+
+{tag:"ceo_burnout_prevention",patterns:["ceo burnout prevention","ceo stress management","ceo wellness"],responses:["CEO burnout prevention: exercise, meditation, hobbies, vacations, strong support system. Prioritize mental/physical health. 🧘"]},
+
+{tag:"ceo_success_metrics",patterns:["ceo success metrics","ceo performance","ceo evaluation"],responses:["CEO success metrics: revenue growth, profitability, stock performance, employee satisfaction, innovation output. Holistic evaluation! 📊"]},
+
+{tag:"ceo_failure_recovery",patterns:["ceo comeback","ceo after failure","ceo redemption"],responses:["CEO comebacks: Howard Schultz (Starbucks), Steve Jobs (Apple), Satya Nadella (Microsoft). Learn from failures, adapt, and rebuild. Never give up! 🔄"]},
+
+{tag:"ceo_technology",patterns:["ceo technology adoption","ceo digital transformation","ceo tech savvy"],responses:["CEO technology: embrace digital tools, understand AI/blockchain, drive tech adoption. Tech-savvy CEOs lead innovation. 🤖"]},
+
+{tag:"ceo_global",patterns:["ceo global perspective","ceo international","ceo globalization"],responses:["CEO global mindset: understand cultures, navigate regulations, manage international teams. Global CEOs think beyond borders. 🌍"]},
+
+{tag:"ceo_resilience",patterns:["ceo resilience","ceo toughness","ceo mental strength"],responses:["CEO resilience: bounce back from setbacks, maintain optimism, lead through crises. Mental toughness separates great CEOs. 💪"]},
+
+{tag:"ceo_vision",patterns:["ceo vision","ceo strategic vision","ceo foresight"],responses:["CEO vision: see future possibilities, articulate clear direction, inspire pursuit of ambitious goals. Vision drives transformation! 🔭"]},
+
+{tag:"ceo_execution",patterns:["ceo execution","ceo getting things done","ceo implementation"],responses:["CEO execution: translate vision into action, align organization, track progress, adjust course. Execution turns ideas into reality! ⚡"]},
+
+{tag:"ceo_delegation",patterns:["ceo delegation","ceo empowering others","ceo trust"],responses:["CEO delegation: trust team capabilities, focus on high-level priorities, empower decision-making. Effective delegation scales impact! 🎯"]},
+
+{tag:"ceo_feedback",patterns:["ceo feedback","ceo receiving criticism","ceo openness"],responses:["CEO feedback: seek honest input, listen to criticism, use for improvement. Open CEOs grow faster and build trust. 👂"]},
+
+{tag:"ceo_influence",patterns:["ceo influence","ceo persuasion","ceo negotiation"],responses:["CEO influence: build coalitions, persuade stakeholders, negotiate win-win deals. Influence drives change and alignment. 🗣️"]},
+
+{tag:"ceo_adaptability",patterns:["ceo adaptability","ceo flexibility","ceo change management"],responses:["CEO adaptability: embrace uncertainty, pivot strategies, learn new skills. Adaptable CEOs thrive in changing environments. 🔄"]},
+
+{tag:"ceo_curiosity",patterns:["ceo curiosity","ceo learning mindset","ceo exploration"],responses:["CEO curiosity: ask questions, explore new ideas, challenge assumptions. Curious CEOs drive innovation and discovery. ❓"]},
+
+{tag:"ceo_humility",patterns:["ceo humility","ceo modesty","ceo learning from others"],responses:["CEO humility: acknowledge limitations, learn from everyone, give credit to team. Humble CEOs inspire loyalty and collaboration. 🙇"]},
+
+{tag:"ceo_authenticity",patterns:["ceo authenticity","ceo genuine leadership","ceo true self"],responses:["CEO authenticity: be real, align actions with values, transparent communication. Authentic CEOs build deep trust and connection. ✨"]},
+
+{tag:"ceo_empathy",patterns:["ceo empathy","ceo understanding others","ceo compassion"],responses:["CEO empathy: understand employee/customer perspectives, respond with care, support well-being. Empathetic CEOs create positive cultures. ❤️"]},
+
+{tag:"ceo_optimism",patterns:["ceo optimism","ceo positive outlook","ceo hope"],responses:["CEO optimism: focus on possibilities, inspire hope, maintain morale during challenges. Optimistic CEOs motivate and attract talent. ☀️"]},
+
+{tag:"ceo_integrity",patterns:["ceo integrity","ceo honesty","ceo ethical leadership"],responses:["CEO integrity: consistent ethical behavior, honest communication, principled decisions. Integrity builds unbreakable trust and reputation. ⚖️"]},
+
+{tag:"ceo_patience",patterns:["ceo patience","ceo long term thinking","ceo strategic waiting"],responses:["CEO patience: allow strategies time to work, avoid knee-jerk reactions, trust compounding growth. Patient CEOs build lasting value. 🕰️"]},
+
+{tag:"ceo_gratitude",patterns:["ceo gratitude","ceo appreciation","ceo thankfulness"],responses:["CEO gratitude: recognize team contributions, express thanks, celebrate wins. Grateful CEOs create motivated, loyal organizations. 🙏"]},
+
+{tag:"ceo_generosity",patterns:["ceo generosity","ceo giving","ceo abundance mindset"],responses:["CEO generosity: share success, mentor others, contribute to community. Generous CEOs create positive impact and goodwill. 🤲"]},
+
+{tag:"ceo_balance",patterns:["ceo balance","ceo equilibrium","ceo harmony"],responses:["CEO balance: integrate work/personal life, maintain health, nurture relationships. Balanced CEOs sustain long-term leadership. ⚖️"]},
+
+{tag:"ceo_legacy",patterns:["ceo legacy","ceo lasting impact","ceo remembrance"],responses:["CEO legacy: transformative changes, inspired teams, industry advancements, positive societal impact. Great CEOs leave lasting footprints. 🏆"]},
+
+// ADVICE FUNCTION
+{tag:"business_advice",patterns:["give me advice","business advice","advice for business","help me with advice","need advice","advice please"],responses:[""]},
+
 ];
 
 // ==================== BUSINESS COMPARISON DATABASE ====================
@@ -3505,8 +3945,148 @@ setTimeout(() => {
 }, 800);
 }
 
-// ==================== CHAT ====================
-function levenshteinDistance(a, b) {
+// ==================== CONVERSATION MEMORY ====================
+let conversationHistory = [];
+const MAX_HISTORY_LENGTH = 10;
+
+function addToConversationHistory(userMessage, botResponse, context = {}) {
+  conversationHistory.push({
+    timestamp: new Date().toISOString(),
+    user: userMessage,
+    bot: botResponse,
+    context: context
+  });
+  
+  // Keep only recent history
+  if (conversationHistory.length > MAX_HISTORY_LENGTH) {
+    conversationHistory = conversationHistory.slice(-MAX_HISTORY_LENGTH);
+  }
+  
+  // Save to localStorage
+  try {
+    localStorage.setItem('usemee_conversation_history', JSON.stringify(conversationHistory));
+  } catch (e) {
+    console.warn('Could not save conversation history to localStorage');
+  }
+}
+
+function loadConversationHistory() {
+  try {
+    const saved = localStorage.getItem('usemee_conversation_history');
+    if (saved) {
+      conversationHistory = JSON.parse(saved);
+      // Limit to recent history
+      if (conversationHistory.length > MAX_HISTORY_LENGTH) {
+        conversationHistory = conversationHistory.slice(-MAX_HISTORY_LENGTH);
+      }
+    }
+  } catch (e) {
+    console.warn('Could not load conversation history from localStorage');
+    conversationHistory = [];
+  }
+}
+
+function getConversationContext() {
+  if (conversationHistory.length === 0) return null;
+  
+  const recentMessages = conversationHistory.slice(-3); // Last 3 exchanges
+  return {
+    recentTopics: extractTopicsFromHistory(recentMessages),
+    lastBotResponse: recentMessages[recentMessages.length - 1]?.bot || '',
+    conversationFlow: analyzeConversationFlow(recentMessages)
+  };
+}
+
+function extractTopicsFromHistory(messages) {
+  const topics = new Set();
+  
+  messages.forEach(msg => {
+    const text = (msg.user + ' ' + msg.bot).toLowerCase();
+    
+    // Extract industry topics
+    if (text.includes('tech') || text.includes('software') || text.includes('startup')) topics.add('technology');
+    if (text.includes('retail') || text.includes('store') || text.includes('shop')) topics.add('retail');
+    if (text.includes('ecommerce') || text.includes('online') || text.includes('dropshipping')) topics.add('ecommerce');
+    if (text.includes('restaurant') || text.includes('food') || text.includes('cafe')) topics.add('restaurant');
+    if (text.includes('consulting') || text.includes('consultant') || text.includes('freelance')) topics.add('consulting');
+    if (text.includes('healthcare') || text.includes('medical') || text.includes('clinic')) topics.add('healthcare');
+    
+    // Extract business topics
+    if (text.includes('marketing') || text.includes('advertising') || text.includes('promotion')) topics.add('marketing');
+    if (text.includes('finance') || text.includes('money') || text.includes('funding')) topics.add('finance');
+    if (text.includes('sales') || text.includes('customers') || text.includes('selling')) topics.add('sales');
+    if (text.includes('leadership') || text.includes('team') || text.includes('management')) topics.add('leadership');
+    if (text.includes('business plan') || text.includes('planning')) topics.add('business_planning');
+    if (text.includes('swot') || text.includes('analysis')) topics.add('analysis');
+  });
+  
+  return Array.from(topics);
+}
+
+function analyzeConversationFlow(messages) {
+  if (messages.length < 2) return 'initial';
+  
+  const lastUserMsg = messages[messages.length - 1].user.toLowerCase();
+  const previousBotMsg = messages[messages.length - 2].bot.toLowerCase();
+  
+  // Check for follow-up patterns
+  if (lastUserMsg.includes('why') || lastUserMsg.includes('how') || lastUserMsg.includes('what about') || 
+      lastUserMsg.includes('tell me more') || lastUserMsg.includes('explain') || lastUserMsg.includes('elaborate')) {
+    return 'follow_up_explanation';
+  }
+  
+  if (lastUserMsg.includes('example') || lastUserMsg.includes('can you give') || lastUserMsg.includes('like what')) {
+    return 'follow_up_examples';
+  }
+  
+  if (lastUserMsg.includes('but') || lastUserMsg.includes('however') || lastUserMsg.includes('what if') || 
+      lastUserMsg.includes('problem is') || lastUserMsg.includes('issue is')) {
+    return 'follow_up_concerns';
+  }
+  
+  if (lastUserMsg.includes('next') || lastUserMsg.includes('then') || lastUserMsg.includes('after that') || 
+      lastUserMsg.includes('following') || lastUserMsg.includes('subsequently')) {
+    return 'follow_up_sequence';
+  }
+  
+  return 'continuation';
+}
+
+function generateContextualResponse(userInput, baseResponse, context) {
+  if (!context) return baseResponse;
+  
+  const input = userInput.toLowerCase();
+  const flow = context.conversationFlow;
+  const topics = context.recentTopics;
+  const lastResponse = context.lastBotResponse;
+  
+  // Handle follow-up questions
+  if (flow === 'follow_up_explanation' && input.includes('why')) {
+    return `${baseResponse}\n\n💡 **Context**: Based on our previous discussion about ${topics.join(' and ')}, this is particularly important because it addresses the core challenges in your business area.`;
+  }
+  
+  if (flow === 'follow_up_examples') {
+    return `${baseResponse}\n\n📝 **Real Example**: Drawing from our conversation about ${topics[0] || 'business'}, here's a practical application...`;
+  }
+  
+  if (flow === 'follow_up_concerns') {
+    return `${baseResponse}\n\n🤔 **Addressing Your Concern**: I understand your point about the challenges. Here's how this approach mitigates those specific issues we discussed earlier...`;
+  }
+  
+  if (flow === 'follow_up_sequence') {
+    return `${baseResponse}\n\n➡️ **Next Steps**: Following up on our previous discussion about ${topics.join(' and ')}, this would be the logical next phase in your business development.`;
+  }
+  
+  // Add topic continuity
+  if (topics.length > 0 && !baseResponse.includes('Context')) {
+    return `${baseResponse}\n\n🔗 **Building on our discussion**: This connects to the ${topics.join(' and ')} topics we were exploring earlier.`;
+  }
+  
+  return baseResponse;
+}
+
+// Load history on page load
+loadConversationHistory();
 const matrix = Array.from({length: b.length+1}, (_,i)=>Array(a.length+1).fill(0));
 for(let i=0;i<=b.length;i++) matrix[i][0]=i;
 for(let j=0;j<=a.length;j++) matrix[0][j]=j;
@@ -3924,10 +4504,17 @@ async function generatePptForTopic(topic) {
   const safeName = topic.replace(/[^a-z0-9\- ]/gi, '').replace(/\s+/g, '_').slice(0, 50) || 'presentation';
   try {
     if (typeof PptxGenJS === 'undefined') {
-      throw new Error('PptxGenJS library is not loaded.');
+      throw new Error('PptxGenJS library is not loaded. Please refresh the page and try again.');
     }
 
     let pptx = new PptxGenJS();
+    
+    // Set presentation properties
+    pptx.author = 'Usemee Business Chatbot';
+    pptx.company = 'Usemee';
+    pptx.subject = topic;
+    pptx.title = `${topic} Presentation`;
+
     const details = getTopicDetails(topic);
 
     const slides = [
@@ -3953,8 +4540,10 @@ async function generatePptForTopic(topic) {
       }
     ];
 
-    slides.forEach(s => {
+    slides.forEach((s, index) => {
       let slide = pptx.addSlide();
+      
+      // Add title
       slide.addText(s.title, {
         x: 0.5,
         y: 0.5,
@@ -3962,8 +4551,11 @@ async function generatePptForTopic(topic) {
         h: 0.8,
         fontSize: 28,
         bold: true,
-        color: '363636'
+        color: '363636',
+        align: 'center'
       });
+      
+      // Add content
       slide.addText(s.content, {
         x: 0.5,
         y: 1.4,
@@ -3971,14 +4563,67 @@ async function generatePptForTopic(topic) {
         h: 4.8,
         fontSize: 18,
         color: '333333',
-        align: 'left'
+        align: 'left',
+        valign: 'top'
+      });
+
+      // Add slide number
+      slide.addText(`${index + 1}`, {
+        x: 9.2,
+        y: 6.8,
+        w: 0.3,
+        h: 0.3,
+        fontSize: 12,
+        color: '666666'
       });
     });
 
-    await pptx.writeFile({ fileName: `${safeName}.pptx` });
+    // Generate the PPTX as a blob
+    const pptxBlob = await pptx.write({ outputType: 'blob' });
+    
+    // Create download link
+    const url = URL.createObjectURL(pptxBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${safeName}.pptx`;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    
+    // Trigger download
+    try {
+      a.click();
+    } catch (clickError) {
+      // Fallback for some browsers
+      const event = new MouseEvent('click', {
+        view: window,
+        bubbles: true,
+        cancelable: true
+      });
+      a.dispatchEvent(event);
+    }
+    
+    document.body.removeChild(a);
+    
+    // Clean up the URL object
+    setTimeout(() => URL.revokeObjectURL(url), 100);
+    
     return true;
   } catch (error) {
     console.error('PPT generation failed:', error);
+    
+    // Show user-friendly error message
+    const chatBox = document.getElementById('chat-box');
+    const errorDiv = document.createElement('div');
+    errorDiv.classList.add('message', 'bot');
+    errorDiv.innerHTML = `❌ Sorry, I couldn't generate the PPT. Error: ${error.message}<br><br>
+    <strong>Troubleshooting tips:</strong><br>
+    • Try refreshing the page<br>
+    • Check your internet connection<br>
+    • Try a shorter topic name<br>
+    • Make sure your browser allows downloads<br><br>
+    <em>If the problem persists, you can manually create a presentation using the key points I provided above.</em>`;
+    chatBox.appendChild(errorDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
     return false;
   }
 }
@@ -3994,19 +4639,24 @@ function getPptRequestTopic(input) {
 function getBotReply(input) {
 let userInput = input.toLowerCase();
 
+// Get conversation context for follow-up questions
+const context = getConversationContext();
+
 const predictionTrigger = /(predict|estimate|forecast|calculate|profit or loss|profit forecast|loss forecast|will i make a profit|will i have a loss)/;
 const prediction = predictProfitLoss(userInput);
 if (prediction && (predictionTrigger.test(userInput) || /\d/.test(userInput))) {
-  return prediction;
+  const contextualResponse = generateContextualResponse(input, prediction, context);
+  addToConversationHistory(input, contextualResponse);
+  return contextualResponse;
 }
 
 // Check for business comparison first
 if (userInput.includes('compare') && (userInput.includes('business') || userInput.includes('company') || userInput.includes('companies'))) {
   showBusinessComparison(userInput);
-  return "🔍 Analyzing businesses for comparison...";
+  const response = "🔍 Analyzing businesses for comparison...";
+  addToConversationHistory(input, response);
+  return response;
 }
-
-
 
 let bestIntent = null;
 let bestScore = 0;
@@ -4022,10 +4672,12 @@ bestIntent = intent;
 }
 
 if (bestScore > 0.55 && bestIntent) {
+  let response;
+  
   if (bestIntent.tag === 'idea_generator') {
-    return generateIdeaReply();
+    response = generateIdeaReply();
   }
-  if (bestIntent.tag === 'stock_lookup') {
+  else if (bestIntent.tag === 'stock_lookup') {
     // Extract stock symbol from input (e.g., "AAPL stock" -> "AAPL")
     const symbolMatch = userInput.match(/\b[A-Z]{1,5}\b/);
     if (symbolMatch) {
@@ -4034,16 +4686,454 @@ if (bestScore > 0.55 && bestIntent) {
         document.getElementById('stockSymbol').value = symbolMatch[0];
         getStockData();
       }, 1000);
-      return `Fetching stock data for ${symbolMatch[0]}...`;
+      response = `Fetching stock data for ${symbolMatch[0]}...`;
     } else {
       setTimeout(() => showStockModal(), 1000);
-      return bestIntent.responses[Math.floor(Math.random() * bestIntent.responses.length)];
+      response = bestIntent.responses[Math.floor(Math.random() * bestIntent.responses.length)];
     }
   }
-  return bestIntent.responses[Math.floor(Math.random() * bestIntent.responses.length)];
+  else if (bestIntent.tag === 'business_advice') {
+    response = getPersonalAdvice(userInput);
+  }
+  else if (bestIntent.tag.startsWith('tech_startup_advice') || 
+      bestIntent.tag.startsWith('retail_business_advice') || 
+      bestIntent.tag.startsWith('ecommerce_advice') ||
+      bestIntent.tag.startsWith('restaurant_advice') ||
+      bestIntent.tag.startsWith('consulting_advice') ||
+      bestIntent.tag.startsWith('healthcare_advice')) {
+    const industryMap = {
+      'tech_startup_advice': 'tech',
+      'retail_business_advice': 'retail', 
+      'ecommerce_advice': 'ecommerce',
+      'restaurant_advice': 'restaurant',
+      'consulting_advice': 'consulting',
+      'healthcare_advice': 'healthcare'
+    };
+    const industry = industryMap[bestIntent.tag];
+    response = getIndustryAdvice(industry, userInput);
+  }
+  else if (bestIntent.tag === 'business_plan_wizard') {
+    startBusinessPlanWizard();
+    response = "Let's create your business plan together! I'll guide you through the key sections step by step.";
+  }
+  else if (bestIntent.tag === 'swot_analysis_tool') {
+    startSwotAnalysis();
+    response = "Here's a comprehensive SWOT analysis framework to help you evaluate your business strategically.";
+  }
+  else if (bestIntent.tag === 'market_research_help') {
+    response = `📊 **Market Research Guide:**\n\n1. **Define your target market** - Demographics, psychographics, behaviors\n2. **Analyze market size** - TAM (Total Addressable Market), SAM (Serviceable Available Market)\n3. **Study competitors** - Direct and indirect competitors, their strengths/weaknesses\n4. **Survey potential customers** - Pain points, buying behavior, willingness to pay\n5. **Research trends** - Industry growth, technological changes, regulatory factors\n\n💡 Start with secondary research (online reports, industry publications), then validate with primary research (customer interviews).`;
+  }
+  else {
+    response = bestIntent.responses[Math.floor(Math.random() * bestIntent.responses.length)];
+  }
+  
+  // Make response contextual based on conversation history
+  const contextualResponse = generateContextualResponse(input, response, context);
+  addToConversationHistory(input, contextualResponse);
+  return contextualResponse;
 }
 
-return "I can help with business concepts! Try the Planner and Reports buttons. 💡";
+// Default response with context
+const defaultResponse = "I can help with business concepts! Try the Planner and Reports buttons. 💡";
+const contextualDefault = generateContextualResponse(input, defaultResponse, context);
+addToConversationHistory(input, contextualDefault);
+return contextualDefault;
+}
+
+function getPersonalAdvice(userInput) {
+  const input = userInput.toLowerCase();
+  
+  // Analyze the question for context and specific needs
+  const analysis = {
+    isStartup: input.includes('startup') || input.includes('start') || input.includes('begin') || input.includes('launch'),
+    isMarketing: input.includes('market') || input.includes('sell') || input.includes('advertise') || input.includes('promote') || input.includes('brand'),
+    isFinance: input.includes('money') || input.includes('finance') || input.includes('fund') || input.includes('invest') || input.includes('profit') || input.includes('cost'),
+    isLeadership: input.includes('team') || input.includes('lead') || input.includes('manage') || input.includes('employee') || input.includes('people'),
+    isSales: input.includes('sale') || input.includes('customer') || input.includes('client') || input.includes('convert'),
+    isProduct: input.includes('product') || input.includes('build') || input.includes('create') || input.includes('develop'),
+    isGrowth: input.includes('grow') || input.includes('scale') || input.includes('expand') || input.includes('increase'),
+    isProblem: input.includes('problem') || input.includes('issue') || input.includes('struggle') || input.includes('difficult') || input.includes('help'),
+    isNewbie: input.includes('new') || input.includes('beginner') || input.includes('first time') || input.includes('no experience'),
+    isExperienced: input.includes('experienced') || input.includes('established') || input.includes('running') || input.includes('already'),
+    urgency: input.includes('urgent') || input.includes('quick') || input.includes('fast') || input.includes('now') || input.includes('immediate')
+  };
+
+  // Generate personalized advice based on analysis
+  let advice = [];
+
+  // Startup-specific advice
+  if (analysis.isStartup) {
+    if (analysis.isNewbie) {
+      advice.push("As a complete beginner, focus on learning basics first. Read 'The Lean Startup' by Eric Ries and validate one idea before building anything.");
+      advice.push("Start by identifying problems you personally face - you'll understand them best and can build authentically.");
+    } else {
+      advice.push("Since you're starting out, begin with customer discovery. Interview 50 potential customers before writing a single line of code.");
+      advice.push("Choose a business model you can test in under a week. Avoid complex ideas that require massive upfront investment.");
+    }
+  }
+
+  // Marketing advice
+  if (analysis.isMarketing) {
+    if (analysis.isNewbie) {
+      advice.push("Start with content marketing - create valuable blog posts or videos that solve real problems. This builds trust and authority.");
+    } else if (analysis.isProblem) {
+      advice.push("If marketing isn't working, check your messaging. Are you focusing on benefits to customers, not just features of your product?");
+    } else {
+      advice.push("For marketing success, define your target audience precisely. Create customer personas and speak directly to their pain points.");
+    }
+  }
+
+  // Finance advice
+  if (analysis.isFinance) {
+    if (analysis.isProblem) {
+      advice.push("Financial problems often stem from poor cash flow management. Track every expense and create a 13-week cash flow forecast.");
+      advice.push("If you're losing money, calculate your customer acquisition cost vs. lifetime value. You might be spending too much to get customers.");
+    } else {
+      advice.push("Financial health requires understanding unit economics. Know exactly how much it costs to acquire and serve each customer.");
+    }
+  }
+
+  // Leadership advice
+  if (analysis.isLeadership) {
+    if (analysis.isNewbie) {
+      advice.push("New managers should focus on listening first. Your team knows more about daily operations than you do initially.");
+    } else {
+      advice.push("Great leaders delegate outcomes, not tasks. Tell people what success looks like, then let them figure out how to achieve it.");
+    }
+  }
+
+  // Sales advice
+  if (analysis.isSales) {
+    if (analysis.isProblem) {
+      advice.push("Sales struggles usually mean you're talking too much. Ask questions and listen - understand the customer's real problems first.");
+    } else {
+      advice.push("Successful selling is about building relationships. Focus on becoming a trusted advisor rather than just a salesperson.");
+    }
+  }
+
+  // Product advice
+  if (analysis.isProduct) {
+    if (analysis.isNewbie) {
+      advice.push("Start with a Minimum Viable Product that solves one specific problem extremely well, rather than trying to do everything.");
+    } else {
+      advice.push("Product success comes from iteration based on user feedback. Release early, gather data, and improve continuously.");
+    }
+  }
+
+  // Growth advice
+  if (analysis.isGrowth) {
+    if (analysis.urgency) {
+      advice.push("Urgent growth needs often lead to mistakes. Focus on sustainable growth through customer satisfaction and word-of-mouth.");
+    } else {
+      advice.push("Sustainable growth requires systems and processes. Don't rely on heroic efforts - build scalable operations.");
+    }
+  }
+
+  // General business wisdom
+  if (advice.length === 0) {
+    advice.push("The most important advice: Focus on creating value for customers. Everything else (marketing, sales, finance) flows from there.");
+    advice.push("Business success requires patience and persistence. Most overnight successes took 5-10 years of consistent effort.");
+    advice.push("Always prioritize learning. Read books, take courses, and seek mentors. Knowledge compounds like interest.");
+  }
+
+  // Add timing/contextual advice
+  if (analysis.urgency) {
+    advice.push("When things feel urgent, take a step back. Rushed decisions often create bigger problems. Focus on the most important action right now.");
+  }
+
+  if (analysis.isExperienced) {
+    advice.push("With experience comes pattern recognition. Trust your instincts, but remain open to new perspectives and changing market conditions.");
+  }
+
+  // Return 2-3 pieces of advice
+  const selectedAdvice = advice.sort(() => 0.5 - Math.random()).slice(0, 3);
+  return `💡 **Personalized Advice:**\n\n${selectedAdvice.map((item, index) => `${index + 1}. ${item}`).join('\n\n')}`;
+}
+
+function getIndustryAdvice(industry, userInput) {
+  const input = userInput.toLowerCase();
+  const industries = {
+    tech: {
+      name: "Technology/SaaS",
+      challenges: ["Technical debt", "User acquisition cost", "Competition from big tech", "Rapid technological changes"],
+      opportunities: ["Scalability", "Global reach", "Data-driven decisions", "Automation potential"],
+      key_metrics: ["Monthly recurring revenue", "Churn rate", "Customer acquisition cost", "Product-market fit"],
+      advice: [
+        "Focus on product-market fit before scaling. Build something users love, not just what you think they need.",
+        "Prioritize unit economics early. Know your customer lifetime value vs acquisition cost from day one.",
+        "Choose your tech stack wisely. Consider scalability, developer availability, and long-term maintenance costs.",
+        "Network aggressively in your niche. Attend industry conferences and join relevant online communities.",
+        "Start with a minimum viable product, but ensure it's built on a scalable architecture."
+      ]
+    },
+    retail: {
+      name: "Retail/Store",
+      challenges: ["High competition", "Inventory management", "Foot traffic", "Seasonal fluctuations"],
+      opportunities: ["Local customer relationships", "Immediate feedback", "Brand experience", "Loyalty programs"],
+      key_metrics: ["Foot traffic", "Conversion rate", "Average transaction value", "Inventory turnover"],
+      advice: [
+        "Location is critical. Research demographics, traffic patterns, and competition before signing a lease.",
+        "Focus on customer experience. People remember how you made them feel more than what you sold.",
+        "Implement inventory management systems early. Overstocking ties up cash; understocking loses sales.",
+        "Build a strong local brand presence. Sponsor community events and partner with local influencers.",
+        "Consider omnichannel selling. Combine physical store with online presence for maximum reach."
+      ]
+    },
+    ecommerce: {
+      name: "E-commerce",
+      challenges: ["Logistics and shipping", "Returns management", "Online competition", "Customer trust"],
+      opportunities: ["Global market access", "Data analytics", "Personalization", "Lower overhead"],
+      key_metrics: ["Conversion rate", "Average order value", "Shopping cart abandonment", "Return rate"],
+      advice: [
+        "Invest in high-quality product photography. Visual appeal drives 90% of purchase decisions online.",
+        "Optimize for mobile shopping. Most e-commerce happens on phones, not desktops.",
+        "Build customer trust with reviews, guarantees, and transparent policies. Trust is your currency.",
+        "Focus on email marketing and retargeting. These have the highest ROI for e-commerce businesses.",
+        "Start with a single product category. Master one area before expanding your catalog."
+      ]
+    },
+    restaurant: {
+      name: "Restaurant/Food Service",
+      challenges: ["Food costs", "Staff turnover", "Health regulations", "Seasonal demand"],
+      opportunities: ["Repeat customers", "Word-of-mouth marketing", "Menu innovation", "Community events"],
+      key_metrics: ["Table turnover rate", "Food cost percentage", "Customer satisfaction", "Repeat visit rate"],
+      advice: [
+        "Control food costs meticulously. Track waste, portion sizes, and supplier pricing constantly.",
+        "Create signature dishes that differentiate you. People remember unique, delicious food.",
+        "Staff training is crucial. Happy, well-trained staff provide better service and reduce turnover.",
+        "Build a loyal customer base through special events, loyalty programs, and excellent service.",
+        "Consider takeout and delivery early. These revenue streams can sustain you during slow periods."
+      ]
+    },
+    consulting: {
+      name: "Consulting Services",
+      challenges: ["Client acquisition", "Project scoping", "Cash flow gaps", "Expertise maintenance"],
+      opportunities: ["High margins", "Scalable knowledge", "Network effects", "Thought leadership"],
+      key_metrics: ["Utilization rate", "Client retention", "Project profitability", "Referral rate"],
+      advice: [
+        "Develop a niche specialty. General consultants struggle; specialists get premium rates.",
+        "Build credibility through content marketing. Write articles, speak at conferences, publish insights.",
+        "Network strategically. Join industry associations and attend relevant events regularly.",
+        "Create standardized processes. Templates and frameworks make delivery efficient and consistent.",
+        "Focus on client success stories. Case studies and testimonials are your best marketing tools."
+      ]
+    },
+    healthcare: {
+      name: "Healthcare Services",
+      challenges: ["Regulatory compliance", "Insurance complexities", "Patient privacy", "High competition"],
+      opportunities: ["Growing demand", "Stable revenue", "Trust-based relationships", "Technology integration"],
+      key_metrics: ["Patient satisfaction", "Appointment fill rate", "Insurance reimbursement", "Patient retention"],
+      advice: [
+        "Compliance is non-negotiable. Invest in legal counsel and stay updated on healthcare regulations.",
+        "Patient experience drives referrals. Focus on communication, wait times, and care quality.",
+        "Build strong relationships with insurance providers. Understanding reimbursement is key to profitability.",
+        "Embrace technology for efficiency. Electronic health records and telemedicine can streamline operations.",
+        "Develop a strong brand reputation. Healthcare decisions are often based on trust and recommendations."
+      ]
+    }
+  };
+
+  const industryData = industries[industry] || industries.tech; // Default to tech if not found
+
+  // Analyze user input for specific context
+  const isNewbie = input.includes('new') || input.includes('start') || input.includes('beginner');
+  const isScaling = input.includes('grow') || input.includes('scale') || input.includes('expand');
+  const isStruggling = input.includes('problem') || input.includes('struggle') || input.includes('difficult') || input.includes('help');
+
+  let advice = [];
+
+  if (isNewbie) {
+    advice.push(`Starting in ${industryData.name}? Focus on learning industry basics and building a small customer base before scaling.`);
+    advice.push(`For ${industryData.name} beginners: Network with industry veterans and study successful companies in your niche.`);
+  }
+
+  if (isScaling) {
+    advice.push(`Scaling ${industryData.name}? Focus on your key metrics: ${industryData.key_metrics.slice(0, 2).join(', ')}.`);
+    advice.push(`Growth tip for ${industryData.name}: Address these challenges first: ${industryData.challenges.slice(0, 2).join(', ')}.`);
+  }
+
+  if (isStruggling) {
+    advice.push(`Common ${industryData.name} challenges include: ${industryData.challenges.slice(0, 2).join(', ')}. Start with the most critical one.`);
+    advice.push(`For ${industryData.name} problems: Focus on your strengths and consider partnerships to address weaknesses.`);
+  }
+
+  // Add 1-2 general industry-specific advice
+  const randomAdvice = industryData.advice.sort(() => 0.5 - Math.random()).slice(0, 2);
+  advice = advice.concat(randomAdvice);
+
+  return `🎯 **${industryData.name} Industry Advice:**\n\n${advice.map((item, index) => `${index + 1}. ${item}`).join('\n\n')}`;
+}
+
+function startBusinessPlanWizard() {
+  const chatBox = document.getElementById('chat-box');
+  
+  // Clear any existing wizard state
+  if (window.businessPlanWizard) {
+    delete window.businessPlanWizard;
+  }
+
+  window.businessPlanWizard = {
+    step: 1,
+    data: {},
+    steps: [
+      {
+        question: "What's your business idea or concept?",
+        field: "idea",
+        hint: "Be specific - what product/service will you offer?"
+      },
+      {
+        question: "Who is your target customer?",
+        field: "target_customer", 
+        hint: "Describe their demographics, needs, and pain points"
+      },
+      {
+        question: "What makes your business unique?",
+        field: "unique_value",
+        hint: "What's your competitive advantage?"
+      },
+      {
+        question: "How will you make money?",
+        field: "revenue_model",
+        hint: "Subscription, one-time sales, advertising, etc."
+      },
+      {
+        question: "Who are your main competitors?",
+        field: "competitors",
+        hint: "List 2-3 direct and indirect competitors"
+      },
+      {
+        question: "What's your marketing strategy?",
+        field: "marketing",
+        hint: "How will you attract and retain customers?"
+      },
+      {
+        question: "What's your 3-month goal?",
+        field: "short_term_goal",
+        hint: "Specific, measurable goal for the next quarter"
+      }
+    ]
+  };
+
+  askWizardQuestion();
+}
+
+function askWizardQuestion() {
+  const wizard = window.businessPlanWizard;
+  if (wizard.step > wizard.steps.length) {
+    generateBusinessPlanSummary();
+    return;
+  }
+
+  const currentStep = wizard.steps[wizard.step - 1];
+  const chatBox = document.getElementById('chat-box');
+  
+  const question = `📋 **Business Plan Wizard - Step ${wizard.step}/${wizard.steps.length}**
+
+${currentStep.question}
+
+${currentStep.hint}`;
+  
+  const questionDiv = document.createElement('div');
+  questionDiv.classList.add('message', 'bot');
+  questionDiv.innerHTML = question.replace(/\n/g, '<br>');
+  chatBox.appendChild(questionDiv);
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  // Store the question in conversation history
+  addToConversationHistory(`Step ${wizard.step} question`, question);
+}
+
+function processWizardAnswer(answer) {
+  const wizard = window.businessPlanWizard;
+  const currentStep = wizard.steps[wizard.step - 1];
+  
+  wizard.data[currentStep.field] = answer;
+  wizard.step++;
+
+  // Store the user's answer in conversation history
+  addToConversationHistory(answer, `Step ${wizard.step - 1} completed: ${currentStep.question}`);
+
+  if (wizard.step <= wizard.steps.length) {
+    setTimeout(askWizardQuestion, 500);
+  } else {
+    setTimeout(generateBusinessPlanSummary, 1000);
+  }
+}
+
+function generateBusinessPlanSummary() {
+  const wizard = window.businessPlanWizard;
+  const data = wizard.data;
+  const chatBox = document.getElementById('chat-box');
+
+  const summary = `🎉 **Your Business Plan Summary**
+
+Business Idea: ${data.idea || 'Not specified'}
+Target Customer: ${data.target_customer || 'Not specified'}
+Unique Value: ${data.unique_value || 'Not specified'}
+Revenue Model: ${data.revenue_model || 'Not specified'}
+Competitors: ${data.competitors || 'Not specified'}
+Marketing Strategy: ${data.marketing || 'Not specified'}
+3-Month Goal: ${data.short_term_goal || 'Not specified'}
+
+💡 Next Steps:
+• Refine your business model
+• Create financial projections
+• Build a prototype or MVP
+• Test with potential customers
+• Develop a detailed marketing plan
+
+This is a great foundation! Consider consulting with mentors or advisors to refine your plan.`;
+
+  const summaryDiv = document.createElement('div');
+  summaryDiv.classList.add('message', 'bot');
+  summaryDiv.innerHTML = summary.replace(/\n/g, '<br>');
+  chatBox.appendChild(summaryDiv);
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  // Store the summary in conversation history
+  addToConversationHistory('Business plan completed', summary);
+
+  // Clean up wizard
+  delete window.businessPlanWizard;
+}
+
+function startSwotAnalysis() {
+  const chatBox = document.getElementById('chat-box');
+  
+  const swotDiv = document.createElement('div');
+  swotDiv.classList.add('message', 'bot');
+  swotDiv.innerHTML = `📊 **SWOT Analysis Tool**<br><br>
+  SWOT helps you evaluate your business's:<br>
+  • <strong>S</strong>trengths (internal advantages)<br>
+  • <strong>W</strong>eaknesses (internal challenges)<br>
+  • <strong>O</strong>pportunities (external advantages)<br>
+  • <strong>T</strong>hreats (external challenges)<br><br>
+  
+  <strong>Example SWOT for a Tech Startup:</strong><br><br>
+  <strong>Strengths:</strong><br>
+  • Innovative technology<br>
+  • Skilled development team<br>
+  • Strong technical expertise<br><br>
+  
+  <strong>Weaknesses:</strong><br>
+  • Limited marketing budget<br>
+  • New to the market<br>
+  • Small team size<br><br>
+  
+  <strong>Opportunities:</strong><br>
+  • Growing demand for our solution<br>
+  • Partnerships with larger companies<br>
+  • Expanding to new markets<br><br>
+  
+  <strong>Threats:</strong><br>
+  • Competition from established players<br>
+  • Economic downturn affecting funding<br>
+  • Rapid technological changes<br><br>
+  
+  <em>Take 10-15 minutes to complete your own SWOT analysis. This strategic thinking will clarify your business direction!</em>`;
+
+  chatBox.appendChild(swotDiv);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 function addMessage(text, sender, options = {}) {
@@ -4102,7 +5192,9 @@ async function sendMessage() {
 
   const pptTopic = getPptRequestTopic(message);
   if (pptTopic === 'needTopic') {
-    addMessage('Please specify the topic for the presentation, for example: "Create a presentation about marketing strategy".', 'bot');
+    const response = 'Please specify the topic for the presentation, for example: "Create a presentation about marketing strategy".';
+    addMessage(response, 'bot');
+    addToConversationHistory(message, response);
     return;
   }
 
@@ -4110,14 +5202,25 @@ async function sendMessage() {
     const statusMessage = addMessage('Generating your presentation...', 'bot', { instant: true, status: 'loading' });
     const success = await generatePptForTopic(pptTopic);
     if (success) {
-      updateBotMessage(statusMessage, `✅ Presentation generated successfully! Your download should start now.`);
+      const response = `✅ Presentation generated successfully! Your download should start now.`;
+      updateBotMessage(statusMessage, response);
+      addToConversationHistory(message, response);
     } else {
-      updateBotMessage(statusMessage, '❌ Presentation failed to generate. Please try again or try a simpler topic.');
+      const response = '❌ Presentation failed to generate. Please try again or try a simpler topic.';
+      updateBotMessage(statusMessage, response);
+      addToConversationHistory(message, response);
     }
     return;
   }
 
   const reply = getBotReply(message);
+  
+  // Check if business plan wizard is active
+  if (window.businessPlanWizard && window.businessPlanWizard.step <= window.businessPlanWizard.steps.length) {
+    processWizardAnswer(message);
+    return;
+  }
+
   addMessage(reply, 'bot');
 }
 
