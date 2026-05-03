@@ -3923,6 +3923,10 @@ async function generatePptForTopic(topic) {
   if (!topic) return false;
   const safeName = topic.replace(/[^a-z0-9\- ]/gi, '').replace(/\s+/g, '_').slice(0, 50) || 'presentation';
   try {
+    if (typeof PptxGenJS === 'undefined') {
+      throw new Error('PptxGenJS library is not loaded.');
+    }
+
     let pptx = new PptxGenJS();
     const details = getTopicDetails(topic);
 
@@ -3933,19 +3937,19 @@ async function generatePptForTopic(topic) {
       },
       {
         title: 'Why It Matters',
-        content: details.why.join('\n')
+        content: details.why.map(item => `• ${item}`).join('\n')
       },
       {
         title: 'Key Points',
-        content: details.bullets.join('\n')
+        content: details.bullets.map(item => `• ${item}`).join('\n')
       },
       {
         title: 'Implementation Plan',
-        content: details.implementation.join('\n')
+        content: details.implementation.map(item => `• ${item}`).join('\n')
       },
       {
         title: 'Metrics & Next Steps',
-        content: details.metrics.join('\n')
+        content: details.metrics.map(item => `• ${item}`).join('\n')
       }
     ];
 
