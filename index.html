@@ -248,6 +248,11 @@ body.dark .message.user { background-color: #1e4d7b; color: #e0e0e0; }
 }
 body.dark .message.bot { background-color: #2a2a4a; color: #e0e0e0; }
 
+.message.bot.loading {
+  font-style: italic;
+  opacity: 0.9;
+}
+
 .chat-input-area {
     display: flex;
     flex-direction: column;
@@ -4016,24 +4021,35 @@ if (bestScore > 0.55 && bestIntent) {
 return "I can help with business concepts! Try the Planner and Reports buttons. 💡";
 }
 
-function addMessage(text, sender) {
-const chatBox = document.getElementById('chat-box');
-const msgDiv = document.createElement('div');
-msgDiv.classList.add('message', sender);
-chatBox.appendChild(msgDiv);
-chatBox.scrollTop = chatBox.scrollHeight;
+function addMessage(text, sender, options = {}) {
+  const chatBox = document.getElementById('chat-box');
+  const msgDiv = document.createElement('div');
+  msgDiv.classList.add('message', sender);
+  if (options.status) {
+    msgDiv.classList.add(options.status);
+  }
+  chatBox.appendChild(msgDiv);
+  chatBox.scrollTop = chatBox.scrollHeight;
 
-if (sender === 'bot') {
-  typeMessage(msgDiv, text);
-} else {
-  msgDiv.textContent = text;
+  if (sender === 'bot' && !options.instant) {
+    typeMessage(msgDiv, text);
+  } else {
+    msgDiv.textContent = text;
+  }
+
+  return msgDiv;
 }
+
+function updateBotMessage(element, text) {
+  if (!element) return;
+  element.textContent = text;
+  element.classList.remove('loading');
 }
 
 function typeMessage(element, text) {
-let charIndex = 0;
-let wordBuffer = '';
-const speed = 30;
+  let charIndex = 0;
+  let wordBuffer = '';
+  const speed = 30;
 
 function typeNextCharacter() {
   if (charIndex < text.length) {
@@ -4066,10 +4082,12 @@ async function sendMessage() {
   }
 
   if (pptTopic) {
-    addMessage(`✅ Generating your presentation about "${pptTopic}". Download should start shortly.`, 'bot');
+    const statusMessage = addMessage('Generating your presentation...', 'bot', { instant: true, status: 'loading' });
     const success = await generatePptForTopic(pptTopic);
-    if (!success) {
-      addMessage('❌ Presentation failed to download. Please try again or check browser permissions.', 'bot');
+    if (success) {
+      updateBotMessage(statusMessage, `✅ Presentation generated successfully! Your download should start now.`);
+    } else {
+      updateBotMessage(statusMessage, '❌ Presentation failed to generate. Please try again or try a simpler topic.');
     }
     return;
   }
